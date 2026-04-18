@@ -1,8 +1,7 @@
 .review-page {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   background: #1e1b3a; /* Deep purple background */
-  padding: 2rem 1.5rem;
+  padding: 4rem 1.5rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: white;
   display: flex;
@@ -13,15 +12,12 @@
 .review-container {
   width: 100%;
   max-width: 1200px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .review-header {
-  margin-bottom: 2rem;
-  flex-shrink: 0;
+  margin-bottom: 3.5rem;
 }
 
 .review-title {
@@ -34,9 +30,7 @@
 
 .review-main {
   width: 100%;
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem 0.5rem;
+  padding-bottom: 2rem;
 }
 
 /* Premium Scrollbar */

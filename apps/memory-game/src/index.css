@@ -1,41 +1,27 @@
-.tile-text.easy {
-  font-size: 16px !important;
+.tile-text {
+  font-size: clamp(0.7rem, 4vmin, 2.5rem);
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px;
+  line-height: 1.1;
 }
-.tile-text.medium {
-  font-size: 13px !important;
+
+.grid-4 .tile-text { font-size: clamp(1rem, 6vmin, 3.5rem); }
+.grid-6 .tile-text { font-size: clamp(0.8rem, 4.5vmin, 2.22rem); }
+.grid-8 .tile-text { font-size: clamp(0.6rem, 3.5vmin, 1.45rem); }
+
+.learning-grid .tile-text.math {
+  font-size: clamp(0.6rem, 4vmin, 2.5rem);
 }
-.tile-text.hard {
-  font-size: 11px !important;
+
+.learning-grid .tile-text.text {
+  font-size: clamp(0.5rem, 3vmin, 1.25rem);
 }
-/* Make tiles wider in subject (learning) mode for medium and hard */
+
 .tile {
   aspect-ratio: 1 / 1;
-}
-.learning-grid .tile-text.math.difficulty-medium {
-  font-size: clamp(8px, 1vw, 12px);
-}
-.learning-grid .tile-text.math.difficulty-hard {
-  font-size: clamp(7px, 0.8vw, 10px);
-}
-.learning-grid.grid-6 .tile-text.text {
-  font-size: clamp(8px, 1vw, 11px);
-}
-.learning-grid.grid-8 .tile-text.text {
-  font-size: clamp(7px, 0.8vw, 10px);
-}
-.grid-6 .tile-text.text {
-  font-size: clamp(9px, 1.2vw, 13px);
-}
-.grid-8 .tile-text.text {
-  font-size: clamp(8px, 1vw, 11px);
-}
-.grid-6 .tile-text.math {
-  font-size: clamp(10px, 1.5vw, 15px);
-  max-width: 98%;
-}
-.grid-8 .tile-text.math {
-  font-size: clamp(9px, 1.2vw, 13px);
-  max-width: 98%;
 }
 :root {
   /* Default dark theme values */
@@ -154,8 +140,13 @@ body {
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   color: var(--text-main);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
+}
+
+body:has(.game-page-container) {
+  overflow-y: hidden;
 }
 
 body::before {
@@ -277,13 +268,13 @@ p {
 }
 
 .home-page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
-  overflow: hidden;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
   background: var(--bg-solid);
 }
 
@@ -689,18 +680,21 @@ p {
 }
 
 .game-header {
-  height: clamp(52px, 9dvh, 64px);
+  min-height: clamp(52px, 9dvh, 64px);
+  height: auto;
   background: #111022;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: nowrap;
-  padding: 0 clamp(0.5rem, 1.5vw, 1rem);
+  flex-wrap: wrap;
+  padding: 0.5rem clamp(0.5rem, 1.5vw, 1rem);
   color: #fff;
   flex-shrink: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  gap: clamp(0.35rem, 1vw, 0.8rem);
-  overflow: hidden;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  overflow: visible;
+  position: relative;
+  z-index: 100;
 }
 
 .header-left {
@@ -752,6 +746,55 @@ p {
   gap: clamp(0.25rem, 1vw, 0.6rem);
   align-items: center;
   flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .game-header {
+    flex-direction: row;
+    padding: 0.6rem 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .header-left {
+    order: 1;
+    width: 60%;
+  }
+  
+  .header-right {
+    order: 2;
+    width: 35%;
+    justify-content: flex-end;
+  }
+  
+  .header-center {
+    order: 3;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 0.2rem;
+  }
+  
+  .header-stat {
+    min-width: 50px;
+  }
+  
+  .mode-title {
+    font-size: 0.85rem;
+  }
+  
+  .icon-btn {
+    padding: 6px;
+    min-width: 34px;
+    min-height: 34px;
+  }
 }
 
 .icon-btn {
@@ -839,12 +882,39 @@ p {
 }
 
 .game-board-wrapper {
-  width: min(90vmin, 600px);
-  height: min(90vmin, 600px);
+  /* available height is roughly 100vh - headerHeight - padding */
+  --header-height: clamp(52px, 9vh, 64px);
+  --v-padding: clamp(0.5rem, 2vh, 1.5rem);
+  --max-size: calc(100vh - var(--header-height) - (var(--v-padding) * 2));
+  width: min(95vw, var(--max-size), 600px);
+  height: min(95vw, var(--max-size), 600px);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
+}
+
+.explanation-toast {
+  position: absolute;
+  bottom: clamp(10px, 4vh, 30px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: min(90%, 400px);
+  pointer-events: none;
+}
+
+.explanation-bubble {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  text-align: center;
+  line-height: 1.5;
 }
 
 /* Explanation/Comment Box for Learning Mode */
@@ -2130,14 +2200,42 @@ p {
 @media (max-width: 374px) {
   .game-header {
     flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 0.35rem;
-    padding: 0 clamp(0.35rem, 1.2vw, 0.6rem) !important;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0 clamp(0.2rem, 1vw, 0.5rem) !important;
+    height: auto;
+    min-height: clamp(42px, 12dvh, 50px);
   }
 
-  .header-center {
-    width: auto;
-    justify-content: center;
+  /* Victory header responsiveness */
+  .victory-card--result .victory-section--header {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .victory-title {
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .result-info-text {
+    font-size: 12px;
+    line-height: 1.3;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .stars-container-yellow {
+    font-size: 20px;
+    gap: 4px;
+  }
+
+  .star-gold {
+    font-size: 20px;
   }
 
   .header-left,
@@ -2221,6 +2319,37 @@ p {
     gap: clamp(0.5rem, 2vw, 0.75rem);
   }
 
+  /* Victory header responsiveness */
+  .victory-card--result .victory-section--header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .victory-title {
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .result-info-text {
+    font-size: 13px;
+    line-height: 1.3;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .stars-container-yellow {
+    font-size: 24px;
+    gap: 6px;
+  }
+
+  .star-gold {
+    font-size: 24px;
+  }
+
   .review-grid {
     grid-template-columns: 1fr;
   }
@@ -2243,6 +2372,37 @@ p {
     gap: clamp(0.45rem, 1.4vw, 0.9rem);
     order: 0;
     flex-basis: auto;
+  }
+
+  /* Victory header responsiveness */
+  .victory-card--result .victory-section--header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .victory-title {
+    font-size: 32px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .result-info-text {
+    font-size: 14px;
+    line-height: 1.3;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .stars-container-yellow {
+    font-size: 28px;
+    gap: 8px;
+  }
+
+  .star-gold {
+    font-size: 28px;
   }
 
   .review-grid {
@@ -3015,54 +3175,4 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Game Board Viewport-Fit Layout (no vertical scroll, all tiles visible)    */
-/* -------------------------------------------------------------------------- */
-.game-page-container {
-  height: 100dvh !important;
-  overflow: hidden !important;
-}
-
-.game-header {
-  height: 80px !important;
-  min-height: 80px !important;
-  max-height: 80px !important;
-}
-
-.game-board-area {
-  height: calc(100dvh - 80px) !important;
-  min-height: calc(100dvh - 80px) !important;
-  max-height: calc(100dvh - 80px) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important;
-  padding: 0.25rem !important;
-}
-
-.game-board-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-}
-
-.game-grid {
-  display: grid !important;
-  width: min(90vw, calc(100dvh - 96px)) !important;
-  height: min(90vw, calc(100dvh - 96px)) !important;
-  max-width: min(90vw, calc(100dvh - 96px)) !important;
-  max-height: min(90vw, calc(100dvh - 96px)) !important;
-  gap: clamp(4px, 1vw, 10px) !important;
-}
-
-.tile {
-  width: 100% !important;
-  min-width: 0 !important;
-  aspect-ratio: 1 / 1 !important;
 }

@@ -74,12 +74,14 @@
 .home-page {
   position: relative;
   display: flex;
-  flex: 1;
+  min-height: 100vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1;
+  padding: 2rem 1rem;
 }
 
 .home-content {
