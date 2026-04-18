@@ -1,0 +1,611 @@
+================================================================================
+PROJECT: Memory Battle Arena
+DOCUMENT: SYSTEM ARCHITECTURE & DESIGN
+================================================================================
+
+================================================================================
+1. ARCHITECTURE OVERVIEW
+================================================================================
+
+Memory Battle Arena uses a modular, layered architecture designed for 
+maintainability, scalability, and clean separation of concerns.
+
+High-Level Architecture Diagram:
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                         PRESENTATION LAYER                          │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │                      HTML + CSS + DOM                        │  │
+│  │  - Main Menu Screen                                         │  │
+│  │  - Configuration Screens                                    │  │
+│  │  - Game Grid (Tiles)                                        │  │
+│  │  - Stats Display                                            │  │
+│  │  - Completion Screen                                        │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└────────────────────────────┬─────────────────────────────────────────┘
+                             │
+┌────────────────────────────▼─────────────────────────────────────────┐
+│                       COMPONENT LAYER                                │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │  Tile.js  │  Grid.js  │  Modal.js  │  Timer.js            │  │
+│  │  ┌─────────────────────────────────────────────────────┐   │  │
+│  │  │  Reusable UI Components                           │   │  │
+│  │  │  - Tile rendering and animations                  │   │  │
+│  │  │  - Grid layout management                         │   │  │
+│  │  │  - Modal dialogs for config/completion           │   │  │
+│  │  │  - Timer display and formatting                   │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└────────────────────────────┬─────────────────────────────────────────┘
+                             │
+┌────────────────────────────▼─────────────────────────────────────────┐
+│                     GAME LOGIC LAYER                                 │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │  GameEngine.js  │  RulesEngine.js                           │  │
+│  │  ┌─────────────────────────────────────────────────────┐   │  │
+│  │  │  - Game state management                          │   │  │
+│  │  │  - Tile click handling                            │   │  │
+│  │  │  - Matching logic                                 │   │  │
+│  │  │  - Rules enforcement                              │   │  │
+│  │  │  - Score calculation                              │   │  │
+│  │  │  - Game lifecycle management                      │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└────────────────────────────┬─────────────────────────────────────────┘
+                             │
+┌────────────────────────────▼─────────────────────────────────────────┐
+│                       SERVICE LAYER                                  │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │  DataService.js  │  SoundService.js  │  AnimationService.js│  │
+│  │  ┌─────────────────────────────────────────────────────┐   │  │
+│  │  │  - Data fetching and caching                      │   │  │
+│  │  │  - Sound playback management                      │   │  │
+│  │  │  - Animation orchestration                        │   │  │
+│  │  │  - Utility functions                              │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└────────────────────────────┬─────────────────────────────────────────┘
+                             │
+┌────────────────────────────▼─────────────────────────────────────────┐
+│                      DATA LAYER                                      │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │  fun.json  │  learning.json  │  API.js (mock)             │  │
+│  │  ┌─────────────────────────────────────────────────────┐   │  │
+│  │  │  - JSON data files                                 │   │  │
+│  │  │  - Mock API endpoints                              │   │  │
+│  │  │  - LocalStorage management                         │   │  │
+│  │  │  - Session state persistence                       │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+2. DIRECTORY STRUCTURE
+================================================================================
+
+memory-game/
+│
+├── index.html                    # Main HTML entry point
+├── main.js                       # Application bootstrap & initialization
+│
+├── /styles/
+│   ├── main.css                  # Core styles
+│   ├── components.css            # Component-specific styles
+│   ├── animations.css            # Animation definitions
+│   └── responsive.css            # Media queries
+│
+├── /components/
+│   ├── Tile.js                   # Tile component
+│   ├── Grid.js                   # Grid/layout component
+│   ├── Modal.js                  # Modal/dialog component
+│   ├── Timer.js                  # Timer display component
+│   ├── ScoreBoard.js             # Score/stats display
+│   └── Confetti.js               # Confetti animation component
+│
+├── /services/
+│   ├── GameEngine.js             # Core game logic
+│   ├── RulesEngine.js            # Game rules & validation
+│   ├── DataService.js            # Data loading & caching
+│   ├── SoundService.js           # Audio management
+│   ├── AnimationService.js       # Animation orchestration
+│   └── StorageService.js         # LocalStorage operations
+│
+├── /utils/
+│   ├── shuffle.js                # Array shuffling utility
+│   ├── generateTiles.js          # Tile generation utility
+│   ├── calculateScore.js         # Scoring algorithms
+│   ├── helpers.js                # General utilities
+│   └── constants.js              # Global constants
+│
+└── /data/
+    ├── fun.json                  # Fun mode data
+    └── learning.json             # Learning mode data
+
+File Count: ~25 files
+Total Code Size: ~400-600 lines (well-organized)
+
+================================================================================
+3. MODULE RELATIONSHIPS
+================================================================================
+
+Dependency Graph:
+
+main.js (entry point)
+  ├─→ GameEngine.js
+  │   ├─→ RulesEngine.js
+  │   ├─→ DataService.js
+  │   │   └─→ api.js
+  │   ├─→ AnimationService.js
+  │   └─→ SoundService.js
+  │
+  ├─→ Grid.js
+  │   └─→ Tile.js
+  │
+  ├─→ Modal.js
+  ├─→ Timer.js
+  ├─→ ScoreBoard.js
+  └─→ utilities (shuffle, generateTiles, helpers, etc.)
+
+No Circular Dependencies Allowed
+External Dependencies: ZERO (vanilla JS only)
+
+================================================================================
+4. CORE COMPONENTS DESIGN
+================================================================================
+
+A. GAME ENGINE (GameEngine.js)
+
+Purpose: Central game state manager and event orchestrator
+
+Responsibilities:
+  - Initialize game state
+  - Handle tile click events
+  - Coordinate matching logic
+  - Manage game lifecycle
+  - Update UI based on state changes
+  - Track game statistics
+
+Key Methods:
+  - init(mode, config): Initialize game
+  - handleTileClick(tileId): Process tile click
+  - checkMatch(): Validate matching pair
+  - completeGame(): Handle game end
+  - resetGame(): Reset to initial state
+  - getGameState(): Return current state
+
+State Variables:
+  - gameState (global game state object)
+  - config (current game configuration)
+  - isProcessing (prevent concurrent clicks)
+
+Event Listeners:
+  - 'tileClick' → handleTileClick()
+  - 'gameReset' → resetGame()
+  - 'modeChange' → init()
+
+B. RULES ENGINE (RulesEngine.js)
+
+Purpose: Enforce game rules and validate actions
+
+Responsibilities:
+  - Validate tile states
+  - Check matching conditions
+  - Enforce click restrictions
+  - Validate game completion
+  - Prevent invalid moves
+
+Key Methods:
+  - canClickTile(tileId): Check if tile can be clicked
+  - isValidMatch(tile1, tile2): Check if tiles match
+  - isGameComplete(): Check completion condition
+  - getMatchResult(tile1, tile2): Return match type
+
+C. DATA SERVICE (DataService.js)
+
+Purpose: Load and manage game data
+
+Responsibilities:
+  - Fetch fun.json data
+  - Fetch learning.json data
+  - Cache loaded data
+  - Generate tile objects
+  - Shuffle tiles
+  - Validate data integrity
+
+Key Methods:
+  - loadFunMode(theme, difficulty): Load fun mode data
+  - loadLearningMode(subject, topic, difficulty): Load learning data
+  - generateTiles(data, mode): Convert data to tile objects
+  - validateData(data, mode): Check data integrity
+  - getTileConfig(): Get current tile configuration
+
+D. ANIMATION SERVICE (AnimationService.js)
+
+Purpose: Orchestrate all animations
+
+Responsibilities:
+  - Flip tile animation
+  - Match success animation (glow/bounce)
+  - Match failure animation (shake)
+  - Confetti animation
+  - Modal transitions
+
+Key Methods:
+  - flipTile(element, duration): Flip animation
+  - matchAnimation(elements): Success animation
+  - failAnimation(elements): Failure animation
+  - confetti(): Celebration animation
+  - transitionIn(element): Modal appear
+  - transitionOut(element): Modal disappear
+
+E. SOUND SERVICE (SoundService.js)
+
+Purpose: Manage audio playback
+
+Responsibilities:
+  - Play flip sound
+  - Play match sound
+  - Play fail sound
+  - Play win sound
+  - Control volume
+  - Mute/unmute toggle
+  - Preload audio files
+
+Key Methods:
+  - play(soundType): Play specific sound
+  - setVolume(level): Set volume (0-1)
+  - toggleMute(): Toggle mute state
+  - preloadSounds(): Load sounds on init
+
+F. TILE COMPONENT (Tile.js)
+
+Purpose: Render individual tile
+
+Responsibilities:
+  - Create DOM element
+  - Manage tile state display
+  - Handle click events
+  - Apply animations
+  - Display content (emoji or Q&A)
+
+Key Methods:
+  - render(): Create tile DOM
+  - flip(): Toggle flipped state
+  - setContent(content): Update tile content
+  - addClass(className): Add CSS class
+  - addEventListener(): Attach click listener
+
+G. GRID COMPONENT (Grid.js)
+
+Purpose: Manage grid layout and rendering
+
+Responsibilities:
+  - Create grid container
+  - Position tiles in grid
+  - Resize grid based on screen
+  - Manage grid responsiveness
+  - Render multiple tiles
+
+Key Methods:
+  - render(tiles): Create grid with tiles
+  - updateGridSize(size): Resize grid
+  - getTileElements(): Get all tile elements
+  - getGridDimensions(): Calculate grid size
+
+================================================================================
+5. DATA FLOW DIAGRAMS
+================================================================================
+
+A. INITIALIZATION FLOW
+
+User Opens App
+    ↓
+main.js loads
+    ↓
+HTML renders
+    ↓
+CSS applied
+    ↓
+Create GameEngine instance
+    ↓
+Show Main Menu
+    ↓
+Listen for mode selection
+
+B. GAME START FLOW
+
+User selects mode + config
+    ↓
+GameEngine.init(mode, config)
+    ↓
+DataService.loadData(mode, params)
+    ↓
+Fetch JSON file
+    ↓
+Validate data
+    ↓
+DataService.generateTiles()
+    ↓
+generateTiles utility shuffles tiles
+    ↓
+Grid.render(tiles)
+    ↓
+For each tile:
+  Tile.render() → Add to DOM
+    ↓
+Apply CSS styles
+    ↓
+Attach click listeners
+    ↓
+Display game screen (ready state)
+    ↓
+Wait for first click
+
+C. TILE CLICK FLOW
+
+User clicks tile
+    ↓
+handleTileClick(tileId) triggered
+    ↓
+RulesEngine.canClickTile() → true?
+    ├─ false → ignore click
+    └─ true ↓
+        GameState.isProcessing = true (prevent concurrent clicks)
+            ↓
+        Play flip sound
+            ↓
+        AnimationService.flipTile()
+            ↓
+        Tile.flip() (visual flip animation ~300ms)
+            ↓
+        Reveal tile content
+            ↓
+        Add tileId to flippedTiles array
+            ↓
+        flippedTiles.length === 1?
+        ├─ yes ↓
+        │   isProcessing = false (unlock for next click)
+        │   Wait for second tile
+        │
+        └─ no (flippedTiles.length === 2) ↓
+            isProcessing = true
+            RulesEngine.isValidMatch(tile1, tile2)?
+            ├─ yes (MATCH!) ↓
+            │   Add both tileIds to matchedTiles
+            │   Play match sound
+            │   AnimationService.matchAnimation()
+            │   Tiles glow + bounce
+            │   Show "Correct!" message (Learning)
+            │   Clear flippedTiles array
+            │   isGameComplete()?
+            │   ├─ yes → handleCompletion()
+            │   └─ no ↓
+            │       isProcessing = false
+            │       Wait for next click
+            │
+            └─ no (NO MATCH) ↓
+                Play fail sound
+                AnimationService.failAnimation()
+                Tiles shake
+                Show "Try again!" message (Learning)
+                setTimeout(1500ms) {
+                  AnimationService.flipTile() (flip back)
+                  Clear flippedTiles array
+                  Increment moves counter
+                  Update UI
+                  isProcessing = false
+                  Wait for next click
+                }
+
+D. GAME COMPLETION FLOW
+
+Last tile matched
+    ↓
+matchedTiles.length === totalPairs?
+    ↓
+GameEngine.completeGame()
+    ↓
+Stop timer
+    ↓
+Calculate statistics
+    ├─ Final moves
+    ├─ Final time
+    ├─ Accuracy (Learning)
+    └─ Star rating
+    ↓
+Play victory sound
+    ↓
+AnimationService.confetti()
+    ↓
+Modal.showCompletion()
+    ├─ Display stats
+    ├─ Display buttons
+    └─ Show confetti animation (5s)
+    ↓
+Store game results
+    ↓
+Wait for user action
+    ├─ Play Again → init(same config)
+    ├─ New Game → show config screen
+    └─ Main Menu → show main menu
+
+================================================================================
+6. STATE MANAGEMENT
+================================================================================
+
+State Immutability Principles:
+
+1. GameState object is single source of truth
+2. Only GameEngine modifies gameState
+3. Components read from gameState, don't modify
+4. Use events/callbacks for state updates
+5. UI re-renders when state changes
+
+State Update Pattern:
+
+// Service function
+function handleTileClick(tileId) {
+  // 1. Validate
+  if (!RulesEngine.canClickTile(tileId)) return;
+  
+  // 2. Update state
+  gameState.flippedTiles.push(tileId);
+  gameState.moves++;
+  
+  // 3. Side effects (animations, sounds)
+  AnimationService.flipTile();
+  SoundService.play('flip');
+  
+  // 4. Trigger UI update
+  UIController.updateDisplay(gameState);
+  
+  // 5. Check game logic
+  if (gameState.flippedTiles.length === 2) {
+    RulesEngine.processMatch();
+  }
+}
+
+Reactive Updates:
+
+All UI updates triggered by:
+  - gameState changes
+  - Event listeners
+  - Animation callbacks
+  - Timer ticks
+
+Never direct DOM manipulation without state update.
+
+================================================================================
+7. ANIMATION ARCHITECTURE
+================================================================================
+
+Animation Framework:
+
+CSS Animations:
+  - Flip: 3D rotation (CSS transform, 300ms)
+  - Glow: Box-shadow increase (CSS animation, 400ms)
+  - Bounce: Scale + position (CSS keyframes, 500ms)
+  - Shake: Translate X (CSS animation, 300ms)
+  - Confetti: Custom SVG + CSS animation
+
+JavaScript Animation Orchestration:
+
+AnimationService coordinates timing:
+  - Delays between animations
+  - Parallel vs sequential
+  - Animation completion callbacks
+  - Cleanup after animation
+
+Example Animation Sequence (Match):
+
+1. Both tiles flip (parallel, 300ms)
+2. Wait 300ms
+3. Show "Correct!" message (fade in, 200ms)
+4. Tiles glow (parallel, 400ms)
+5. Tiles bounce (parallel, 500ms)
+6. Wait 500ms
+7. Clear message, proceed
+
+================================================================================
+8. ERROR HANDLING ARCHITECTURE
+================================================================================
+
+Error Handling Strategy:
+
+try-catch Blocks:
+  - DataService (JSON loading)
+  - API mock calls
+  - DOM operations
+  - Animation callbacks
+
+Error Recovery:
+
+1. DATA_LOAD_ERROR
+   → Try reload
+   → If persistent, show fallback UI
+   → User can return to main menu
+
+2. INVALID_TILE_DATA
+   → Log error
+   → Show error modal
+   → User can go back
+
+3. ANIMATION_ERROR
+   → Graceful degradation
+   → Remove animation, show static state
+   → Game continues normally
+
+4. SOUND_ERROR
+   → Disable sound (continue game)
+   → Mute button shows disabled state
+
+Error Messages:
+  - User-friendly, non-technical
+  - Suggest recovery action
+  - Provide navigation back
+
+================================================================================
+9. PERFORMANCE OPTIMIZATION
+================================================================================
+
+Optimization Strategies:
+
+1. ASSET LOADING
+   - Preload audio on init
+   - Lazy load JSON when needed
+   - Cache loaded data
+
+2. DOM OPTIMIZATION
+   - Minimal DOM manipulations
+   - Use CSS classes for styling changes
+   - Event delegation where possible
+   - DocumentFragment for batch DOM updates
+
+3. ANIMATION OPTIMIZATION
+   - Use CSS transforms (GPU accelerated)
+   - Avoid layout thrashing
+   - Use requestAnimationFrame for JS animations
+   - Remove animations after completion
+
+4. MEMORY MANAGEMENT
+   - Remove event listeners on cleanup
+   - Clear timers on reset
+   - Limit stored game history
+   - Destroy unused objects
+
+5. CODE OPTIMIZATION
+   - Minimize function calls in loops
+   - Cache DOM queries
+   - Use efficient algorithms (shuffle)
+   - Debounce rapid events if needed
+
+================================================================================
+10. TESTING ARCHITECTURE
+================================================================================
+
+Test Coverage Areas:
+
+Unit Tests:
+  - Shuffle algorithm
+  - Score calculation
+  - Matching logic
+  - Data validation
+  - State updates
+
+Integration Tests:
+  - Game initialization
+  - Tile click flow
+  - Game completion
+  - Mode switching
+
+Manual Testing Checklist:
+  ✓ Both modes load correctly
+  ✓ All themes/topics available
+  ✓ Matching logic works
+  ✓ Animations smooth
+  ✓ Sounds play
+  ✓ Responsive on devices
+  ✓ No console errors
+  ✓ Edge cases handled
+
+================================================================================

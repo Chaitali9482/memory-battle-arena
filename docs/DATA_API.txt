@@ -1,0 +1,840 @@
+================================================================================
+PROJECT: Memory Battle Arena
+DOCUMENT: DATA API & MOCK SERVICES
+================================================================================
+
+================================================================================
+1. API OVERVIEW
+================================================================================
+
+The Memory Battle Arena uses a mock API layer (no backend required) that 
+simulates HTTP-like behavior with Promise-based responses. All data is 
+served from JSON files located in the /data directory.
+
+API Implementation: /services/api.js
+
+Features:
+  - Simulates RESTful API endpoints
+  - Promise-based (async/await compatible)
+  - Includes realistic delays (100-300ms)
+  - Error handling and validation
+  - Response caching for performance
+  - Mock error scenarios
+
+================================================================================
+2. FUN MODE ENDPOINTS
+================================================================================
+
+A. GET Fun Mode Themes
+
+Endpoint: api.getFunThemes()
+
+Purpose: Retrieve list of available themes for Fun Mode
+
+Response:
+
+{
+  success: true,
+  data: {
+    themes: [
+      {
+        id: "animals",
+        name: "Animals",
+        description: "Match cute animal emojis",
+        emoji: "🐶",
+        difficulties: ["easy", "medium", "hard"]
+      },
+      {
+        id: "food",
+        name: "Food",
+        description: "Match delicious food emojis",
+        emoji: "🍕",
+        difficulties: ["easy", "medium", "hard"]
+      },
+      {
+        id: "nature",
+        name: "Nature",
+        description: "Match nature-themed emojis",
+        emoji: "🌸",
+        difficulties: ["easy", "medium", "hard"]
+      },
+      {
+        id: "sports",
+        name: "Sports",
+        description: "Match sports-themed emojis",
+        emoji: "⚽",
+        difficulties: ["easy", "medium", "hard"]
+      }
+    ]
+  },
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+Usage:
+
+async function loadThemes() {
+  try {
+    const response = await api.getFunThemes();
+    if (response.success) {
+      displayThemeOptions(response.data.themes);
+    } else {
+      showError(response.error);
+    }
+  } catch (error) {
+    console.error('Failed to load themes:', error);
+  }
+}
+
+B. GET Fun Mode Data
+
+Endpoint: api.getFunData(theme, difficulty)
+
+Parameters:
+  - theme: string (animals, food, nature, sports)
+  - difficulty: string (easy, medium, hard)
+
+Purpose: Load emoji pairs for specified theme and difficulty
+
+Response:
+
+{
+  success: true,
+  data: {
+    theme: "animals",
+    difficulty: "medium",
+    pairs: [
+      {
+        id: 0,
+        emoji: "🐶",
+        name: "Dog",
+        category: "animal"
+      },
+      {
+        id: 1,
+        emoji: "🐱",
+        name: "Cat",
+        category: "animal"
+      },
+      {
+        id: 2,
+        emoji: "🦁",
+        name: "Lion",
+        category: "animal"
+      },
+      {
+        id: 3,
+        emoji: "🐻",
+        name: "Bear",
+        category: "animal"
+      },
+      {
+        id: 4,
+        emoji: "🦊",
+        name: "Fox",
+        category: "animal"
+      },
+      {
+        id: 5,
+        emoji: "🐘",
+        name: "Elephant",
+        category: "animal"
+      }
+    ],
+    gridSize: 4,
+    totalPairs: 6,
+    message: "Ready to match?"
+  },
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+Usage:
+
+async function initializeFunGame(theme, difficulty) {
+  try {
+    gameState.config.soundEnabled && 
+      SoundService.play('loadingStart');
+    
+    const response = await api.getFunData(theme, difficulty);
+    
+    if (response.success) {
+      const tiles = generateTiles(response.data.pairs, 'fun');
+      const shuffledTiles = shuffle(tiles);
+      
+      gameState.tiles = shuffledTiles;
+      gameState.config.theme = theme;
+      gameState.config.difficulty = difficulty;
+      gameState.config.soundEnabled && 
+        SoundService.play('loadingComplete');
+      
+      renderGameGrid(shuffledTiles);
+    } else {
+      handleApiError(response);
+    }
+  } catch (error) {
+    console.error('Game initialization failed:', error);
+    showErrorModal(error.message);
+  }
+}
+
+Error Response:
+
+{
+  success: false,
+  error: "Theme not found",
+  code: "NOT_FOUND",
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+================================================================================
+3. LEARNING MODE ENDPOINTS
+================================================================================
+
+A. GET Learning Subjects
+
+Endpoint: api.getLearningSubjects()
+
+Purpose: Retrieve list of available subjects for Learning Mode
+
+Response:
+
+{
+  success: true,
+  data: {
+    subjects: [
+      {
+        id: "math",
+        name: "Mathematics",
+        description: "Learn math concepts through memory matching",
+        icon: "🧮",
+        topics: [
+          {
+            id: "addition",
+            name: "Addition",
+            description: "Basic addition problems"
+          },
+          {
+            id: "subtraction",
+            name: "Subtraction",
+            description: "Basic subtraction problems"
+          },
+          {
+            id: "multiplication",
+            name: "Multiplication",
+            description: "Multiplication tables"
+          }
+        ]
+      },
+      {
+        id: "science",
+        name: "Science",
+        description: "Learn science facts",
+        icon: "🔬",
+        topics: [
+          {
+            id: "biology",
+            name: "Biology",
+            description: "Living organisms"
+          },
+          {
+            id: "physics",
+            name: "Physics",
+            description: "Forces and motion"
+          },
+          {
+            id: "chemistry",
+            name: "Chemistry",
+            description: "Elements and reactions"
+          }
+        ]
+      },
+      {
+        id: "history",
+        name: "History",
+        description: "Historical events and dates",
+        icon: "📚",
+        topics: [...]
+      },
+      {
+        id: "geography",
+        name: "Geography",
+        description: "Countries and capitals",
+        icon: "🗺️",
+        topics: [...]
+      }
+    ]
+  },
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+Usage:
+
+async function loadSubjects() {
+  try {
+    const response = await api.getLearningSubjects();
+    if (response.success) {
+      populateSubjectDropdown(response.data.subjects);
+    }
+  } catch (error) {
+    showError('Failed to load subjects');
+  }
+}
+
+B. GET Learning Topics
+
+Endpoint: api.getLearningTopics(subject)
+
+Parameters:
+  - subject: string (math, science, history, geography)
+
+Purpose: Get topics for selected subject
+
+Response:
+
+{
+  success: true,
+  data: {
+    subject: "math",
+    topics: [
+      {
+        id: "addition",
+        name: "Addition",
+        description: "Basic addition",
+        difficulties: ["easy", "medium", "hard"],
+        difficulty_counts: {
+          easy: 4,
+          medium: 6,
+          hard: 8
+        }
+      },
+      {
+        id: "subtraction",
+        name: "Subtraction",
+        description: "Basic subtraction",
+        difficulties: ["easy", "medium", "hard"],
+        difficulty_counts: {
+          easy: 4,
+          medium: 6,
+          hard: 8
+        }
+      }
+    ]
+  },
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+Usage:
+
+document.getElementById('subjectSelect').addEventListener(
+  'change', 
+  async (e) => {
+    const subject = e.target.value;
+    const response = await api.getLearningTopics(subject);
+    populateTopicSelect(response.data.topics);
+  }
+);
+
+C. GET Learning Data
+
+Endpoint: api.getLearningData(subject, topic, difficulty)
+
+Parameters:
+  - subject: string (math, science, history, geography)
+  - topic: string (addition, biology, etc.)
+  - difficulty: string (easy, medium, hard)
+
+Purpose: Load Q&A pairs for selected subject/topic/difficulty
+
+Response:
+
+{
+  success: true,
+  data: {
+    subject: "math",
+    topic: "addition",
+    difficulty: "easy",
+    pairs: [
+      {
+        pairId: 0,
+        question: "2 + 3",
+        answer: "5",
+        explanation: "Adding 2 and 3 gives us 5",
+        difficulty: 1,
+        keywords: ["addition", "basic", "numbers"]
+      },
+      {
+        pairId: 1,
+        question: "1 + 4",
+        answer: "5",
+        explanation: "1 plus 4 equals 5",
+        difficulty: 1,
+        keywords: ["addition", "basic"]
+      },
+      {
+        pairId: 2,
+        question: "3 + 2",
+        answer: "5",
+        explanation: "3 plus 2 also equals 5",
+        difficulty: 1,
+        keywords: ["addition", "commutative"]
+      },
+      {
+        pairId: 3,
+        question: "What is 1 + 3?",
+        answer: "4",
+        explanation: "1 plus 3 equals 4",
+        difficulty: 1,
+        keywords: ["addition", "basic"]
+      }
+    ],
+    totalPairs: 4,
+    metadata: {
+      estimatedDuration: "3-5 minutes",
+      skillLevel: "beginner"
+    }
+  },
+  timestamp: "2024-01-01T10:00:00Z"
+}
+
+Usage:
+
+async function initializeLearningGame(subject, topic, difficulty) {
+  try {
+    showLoadingSpinner();
+    
+    const response = await api.getLearningData(
+      subject, 
+      topic, 
+      difficulty
+    );
+    
+    if (response.success) {
+      // Generate tiles from Q&A pairs
+      const qaTiles = response.data.pairs.flatMap(pair => [
+        {
+          id: pair.pairId * 2,
+          value: {
+            type: 'question',
+            text: pair.question
+          },
+          pairId: pair.pairId,
+          isFlipped: false,
+          isMatched: false
+        },
+        {
+          id: pair.pairId * 2 + 1,
+          value: {
+            type: 'answer',
+            text: pair.answer,
+            explanation: pair.explanation
+          },
+          pairId: pair.pairId,
+          isFlipped: false,
+          isMatched: false
+        }
+      ]);
+      
+      const shuffledTiles = shuffle(qaTiles);
+      gameState.tiles = shuffledTiles;
+      gameState.stats.totalPairs = response.data.totalPairs;
+      gameState.hints.remaining = 3;
+      
+      hideLoadingSpinner();
+      renderGameGrid(shuffledTiles);
+    }
+  } catch (error) {
+    hideLoadingSpinner();
+    showErrorModal(error.message);
+  }
+}
+
+D. Difficulty Metadata
+
+Endpoint: api.getDifficultyInfo(subject, topic, difficulty)
+
+Purpose: Get detailed info about selected difficulty
+
+Response:
+
+{
+  success: true,
+  data: {
+    difficulty: "medium",
+    pairCount: 6,
+    estimatedTime: "5-10 minutes",
+    skillLevel: "intermediate",
+    description: "Medium difficulty - requires knowledge of basic concepts",
+    hints: {
+      available: 3,
+      recoveryRules: "Each correct match gives 1 hint"
+    }
+  }
+}
+
+================================================================================
+4. API SERVICE IMPLEMENTATION (api.js)
+================================================================================
+
+Class Structure:
+
+class APIService {
+  constructor() {
+    this.cache = {};
+    this.baseDelay = 150;  // Realistic network delay
+  }
+  
+  // FUN MODE ENDPOINTS
+  async getFunThemes() { }
+  async getFunData(theme, difficulty) { }
+  
+  // LEARNING MODE ENDPOINTS
+  async getLearningSubjects() { }
+  async getLearningTopics(subject) { }
+  async getLearningData(subject, topic, difficulty) { }
+  async getDifficultyInfo(subject, topic, difficulty) { }
+  
+  // UTILITY METHODS
+  async _simulateNetworkDelay() { }
+  _getCacheKey(endpoint, params) { }
+  _validateData(data, schema) { }
+}
+
+Key Features:
+
+1. CACHING
+   - Store fetched data to avoid repeated requests
+   - Reduces load time on mode/difficulty changes
+   - Manual cache invalidation if needed
+
+2. ERROR HANDLING
+   - Validate response data structure
+   - Return structured error objects
+   - Provide meaningful error messages
+
+3. VALIDATION
+   - Check data against schema
+   - Validate parameters
+   - Handle missing/corrupted data
+
+4. REALISTIC DELAYS
+   - Simulate network latency (100-300ms)
+   - Prevents UI from feeling instant/unresponsive
+   - Shows loading states naturally
+
+================================================================================
+5. DATA LOADING FLOW
+================================================================================
+
+FUN MODE LOADING:
+
+User clicks "Start Game"
+    ↓
+showLoadingUI()
+    ↓
+api.getFunData(theme, difficulty)
+    ↓
+Cache hit?
+├─ Yes ↓
+│   Return cached data (instant)
+│
+└─ No ↓
+    Fetch from fun.json
+    ↓
+    Validate data structure
+    ├─ Invalid → return error
+    └─ Valid ↓
+        Cache result
+        ↓
+        Return data
+    ↓
+GameEngine receives data
+    ↓
+generateTiles() converts to tile objects
+    ↓
+shuffle() randomizes tile order
+    ↓
+Grid.render() displays tiles
+    ↓
+hideLoadingUI()
+    ↓
+Game ready for interaction
+
+LEARNING MODE LOADING:
+
+User selects Subject
+    ↓
+api.getLearningSubjects()
+    ↓
+Display topics for selected subject
+    ↓
+User selects Topic
+    ↓
+api.getLearningTopics(subject)
+    ↓
+Display difficulties
+    ↓
+User selects Difficulty
+    ↓
+api.getLearningData(subject, topic, difficulty)
+    ↓
+(Same validation and caching as Fun Mode)
+    ↓
+generateTiles() creates Q/A pairs
+    ↓
+shuffle()
+    ↓
+Grid.render()
+    ↓
+Game ready
+
+================================================================================
+6. ERROR CODES & MESSAGES
+================================================================================
+
+Error Code Reference:
+
+NOT_FOUND
+  - Message: "Theme/Subject/Topic not found"
+  - Recovery: Show available options, let user choose again
+  - HTTP Equivalent: 404
+
+INVALID_PARAM
+  - Message: "Invalid selection parameters"
+  - Recovery: Validate input, show error, return to selection
+  - HTTP Equivalent: 400
+
+INVALID_DATA
+  - Message: "Game data is corrupted"
+  - Recovery: Clear cache, retry, fallback to main menu
+  - HTTP Equivalent: 422
+
+SERVER_ERROR (simulated)
+  - Message: "Failed to load game data"
+  - Recovery: Retry up to 3 times, then suggest reload
+  - HTTP Equivalent: 500
+
+FILE_NOT_FOUND
+  - Message: "JSON file missing"
+  - Recovery: Check file paths, suggest developer to verify
+  - HTTP Equivalent: 404
+
+Error Response Format:
+
+{
+  success: false,
+  error: "Human-readable error message",
+  code: "ERROR_CODE",
+  recoveryOptions: ["retry", "mainMenu", "reload"],
+  timestamp: "ISO timestamp"
+}
+
+Error Handling in UI:
+
+try {
+  const data = await api.getFunData(theme, difficulty);
+  
+  if (!data.success) {
+    // Handle API error
+    switch(data.code) {
+      case 'NOT_FOUND':
+        showModal("Selection not found. Please choose again.");
+        break;
+      case 'SERVER_ERROR':
+        showModal("Loading failed. Please retry or go to main menu.");
+        break;
+      default:
+        showModal("An error occurred. Please try again.");
+    }
+  } else {
+    // Process data
+  }
+} catch (error) {
+  // Handle exception (network, parsing, etc.)
+  showModal("Failed to initialize game: " + error.message);
+}
+
+================================================================================
+7. REQUEST/RESPONSE TIMING
+================================================================================
+
+Realistic Timing:
+
+GET /fun/themes
+  - Cache hit: ~0ms (instant)
+  - Cache miss: ~150ms (simulated network)
+
+GET /fun/data/:theme/:difficulty
+  - Cache hit: ~0ms
+  - Cache miss: ~150-200ms
+
+GET /learning/subjects
+  - Cache hit: ~0ms
+  - Cache miss: ~200ms
+
+GET /learning/topics/:subject
+  - Cache hit: ~0ms
+  - Cache miss: ~150ms
+
+GET /learning/data/:subject/:topic/:difficulty
+  - Cache hit: ~0ms
+  - Cache miss: ~200-300ms
+
+UI Load States:
+
+1. Show loading spinner/message (immediate)
+2. API request (150-300ms)
+3. Hide loading, show content (instant)
+4. Total perceived time: 150-300ms
+
+================================================================================
+8. MOCK DATA STRUCTURE EXAMPLES
+================================================================================
+
+fun.json Structure:
+
+{
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2024-01-01",
+    "themes": ["animals", "food", "nature", "sports"]
+  },
+  
+  "themes": {
+    "animals": {
+      "name": "Animals",
+      "description": "Animal emojis",
+      "easy": {
+        "pairs": [
+          { "id": 0, "emoji": "🐶", "name": "Dog" },
+          { "id": 1, "emoji": "🐱", "name": "Cat" },
+          // ... more pairs
+        ]
+      },
+      "medium": { ... },
+      "hard": { ... }
+    }
+  }
+}
+
+learning.json Structure:
+
+{
+  "metadata": {
+    "version": "1.0",
+    "subjects": ["math", "science", "history", "geography"]
+  },
+  
+  "subjects": {
+    "math": {
+      "name": "Mathematics",
+      "topics": {
+        "addition": {
+          "name": "Addition",
+          "easy": [
+            {
+              "pairId": 0,
+              "question": "2 + 3",
+              "answer": "5",
+              "explanation": "2 plus 3 equals 5"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+================================================================================
+9. CACHING STRATEGY
+================================================================================
+
+Cache Implementation:
+
+const cache = {
+  'fun:animals:easy': { data: [...], timestamp: Date },
+  'fun:food:medium': { data: [...], timestamp: Date },
+  'learning:math:addition:easy': { data: [...], timestamp: Date },
+  'learning:science:biology:medium': { data: [...], timestamp: Date }
+}
+
+Cache Key Format:
+'<mode>:<param1>:<param2>:<param3>'
+
+Cache TTL (Time To Live):
+- No expiration (single session)
+- Clear on page reload
+- Manual clear option for testing
+
+Cache Invalidation:
+
+function clearCache(key) {
+  if (key) {
+    delete cache[key];  // Clear specific entry
+  } else {
+    cache = {};         // Clear all
+  }
+}
+
+// Called when user wants to reset everything
+resetButton.addEventListener('click', () => {
+  api.clearCache();
+  gameState = {};
+});
+
+================================================================================
+10. TESTING THE API LAYER
+================================================================================
+
+Test Cases:
+
+1. Successful Data Loading
+   - Request valid theme/subject
+   - Verify correct data returned
+   - Check cache populated
+
+2. Invalid Parameters
+   - Request non-existent theme
+   - Verify error returned
+   - Check error code
+
+3. Data Validation
+   - Load corrupted JSON
+   - Verify validation catches error
+   - Proper error response
+
+4. Caching Behavior
+   - First request loads from source
+   - Second request from cache
+   - Cache cleared properly
+
+5. Network Simulation
+   - Verify delay added
+   - Multiple requests processed
+   - No race conditions
+
+Testing Code:
+
+async function testAPI() {
+  // Test 1: Valid request
+  console.log('Test 1: Valid fun data');
+  const result1 = await api.getFunData('animals', 'easy');
+  console.assert(result1.success, 'Should succeed');
+  
+  // Test 2: Caching
+  console.log('Test 2: Caching');
+  const result2 = await api.getFunData('animals', 'easy');
+  console.assert(result2.success, 'Cache should work');
+  
+  // Test 3: Invalid theme
+  console.log('Test 3: Invalid theme');
+  const result3 = await api.getFunData('invalid', 'easy');
+  console.assert(!result3.success, 'Should fail for invalid theme');
+  
+  console.log('All API tests completed');
+}
+
+// Run on app init (dev mode only)
+if (isDevelopmentMode) {
+  testAPI();
+}
+
+================================================================================

@@ -1,0 +1,334 @@
+{
+  "themes": {
+    "animals": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          { "id": 0, "emoji": "🐶", "name": "Dog" },
+          { "id": 1, "emoji": "🐱", "name": "Cat" },
+          { "id": 2, "emoji": "🐭", "name": "Mouse" },
+          { "id": 3, "emoji": "🐹", "name": "Hamster" },
+          { "id": 4, "emoji": "🐰", "name": "Rabbit" },
+          { "id": 5, "emoji": "🦊", "name": "Fox" },
+          { "id": 6, "emoji": "🐻", "name": "Bear" },
+          { "id": 7, "emoji": "🐼", "name": "Panda" }
+        ]
+      },
+      "medium": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🐶", "name": "Dog" },
+          { "id": 1, "emoji": "🐱", "name": "Cat" },
+          { "id": 2, "emoji": "🐭", "name": "Mouse" },
+          { "id": 3, "emoji": "🐹", "name": "Hamster" },
+          { "id": 4, "emoji": "🐰", "name": "Rabbit" },
+          { "id": 5, "emoji": "🦊", "name": "Fox" },
+          { "id": 6, "emoji": "🐻", "name": "Bear" },
+          { "id": 7, "emoji": "🐼", "name": "Panda" },
+          { "id": 8, "emoji": "🐨", "name": "Koala" },
+          { "id": 9, "emoji": "🐯", "name": "Tiger" },
+          { "id": 10, "emoji": "🦁", "name": "Lion" },
+          { "id": 11, "emoji": "🐸", "name": "Frog" }
+        ]
+      },
+      "hard": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🐶", "name": "Dog" },
+          { "id": 1, "emoji": "🐱", "name": "Cat" },
+          { "id": 2, "emoji": "🐭", "name": "Mouse" },
+          { "id": 3, "emoji": "🐹", "name": "Hamster" },
+          { "id": 4, "emoji": "🐰", "name": "Rabbit" },
+          { "id": 5, "emoji": "🦊", "name": "Fox" },
+          { "id": 6, "emoji": "🐻", "name": "Bear" },
+          { "id": 7, "emoji": "🐼", "name": "Panda" },
+          { "id": 8, "emoji": "🐨", "name": "Koala" },
+          { "id": 9, "emoji": "🐯", "name": "Tiger" },
+          { "id": 10, "emoji": "🦁", "name": "Lion" },
+          { "id": 11, "emoji": "🐸", "name": "Frog" },
+          { "id": 12, "emoji": "🐵", "name": "Monkey" },
+          { "id": 13, "emoji": "🐔", "name": "Chicken" },
+          { "id": 14, "emoji": "🐧", "name": "Penguin" },
+          { "id": 15, "emoji": "🐦", "name": "Bird" },
+          { "id": 16, "emoji": "🐤", "name": "Chick" },
+          { "id": 17, "emoji": "🐣", "name": "Hatching Chick" },
+          { "id": 18, "emoji": "🐺", "name": "Wolf" },
+          { "id": 19, "emoji": "🦁", "name": "Lion" },
+          { "id": 20, "emoji": "🐯", "name": "Tiger" },
+          { "id": 21, "emoji": "🦒", "name": "Giraffe" },
+          { "id": 22, "emoji": "🐘", "name": "Elephant" },
+          { "id": 23, "emoji": "🦏", "name": "Rhino" },
+          { "id": 24, "emoji": "🦛", "name": "Hippo" },
+          { "id": 25, "emoji": "🐭", "name": "Mouse" },
+          { "id": 26, "emoji": "🐹", "name": "Hamster" },
+          { "id": 27, "emoji": "🐰", "name": "Rabbit" },
+          { "id": 28, "emoji": "🦊", "name": "Fox" },
+          { "id": 29, "emoji": "🐻", "name": "Bear" },
+          { "id": 30, "emoji": "🐼", "name": "Panda" },
+          { "id": 31, "emoji": "🐨", "name": "Koala" },
+          { "id": 32, "emoji": "🐷", "name": "Pig" },
+          { "id": 33, "emoji": "🐮", "name": "Cow" },
+          { "id": 34, "emoji": "🦓", "name": "Zebra" },
+          { "id": 35, "emoji": "🦄", "name": "Unicorn" }
+        ]
+      }
+    },
+    "food": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          { "id": 0, "emoji": "🍎", "name": "Apple" },
+          { "id": 1, "emoji": "🍌", "name": "Banana" },
+          { "id": 2, "emoji": "🍊", "name": "Orange" },
+          { "id": 3, "emoji": "🍇", "name": "Grapes" },
+          { "id": 4, "emoji": "🍓", "name": "Strawberry" },
+          { "id": 5, "emoji": "🍑", "name": "Peach" },
+          { "id": 6, "emoji": "🍍", "name": "Pineapple" },
+          { "id": 7, "emoji": "🥝", "name": "Kiwi" }
+        ]
+      },
+      "medium": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🍎", "name": "Apple" },
+          { "id": 1, "emoji": "🍌", "name": "Banana" },
+          { "id": 2, "emoji": "🍊", "name": "Orange" },
+          { "id": 3, "emoji": "🍇", "name": "Grapes" },
+          { "id": 4, "emoji": "🍓", "name": "Strawberry" },
+          { "id": 5, "emoji": "🍑", "name": "Peach" },
+          { "id": 6, "emoji": "🍍", "name": "Pineapple" },
+          { "id": 7, "emoji": "🥝", "name": "Kiwi" },
+          { "id": 8, "emoji": "🍒", "name": "Cherries" },
+          { "id": 9, "emoji": "🍋", "name": "Lemon" },
+          { "id": 10, "emoji": "🍉", "name": "Watermelon" },
+          { "id": 11, "emoji": "🥭", "name": "Mango" }
+        ]
+      },
+      "hard": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🍎", "name": "Apple" },
+          { "id": 1, "emoji": "🍌", "name": "Banana" },
+          { "id": 2, "emoji": "🍊", "name": "Orange" },
+          { "id": 3, "emoji": "🍇", "name": "Grapes" },
+          { "id": 4, "emoji": "🍓", "name": "Strawberry" },
+          { "id": 5, "emoji": "🍑", "name": "Peach" },
+          { "id": 6, "emoji": "🍍", "name": "Pineapple" },
+          { "id": 7, "emoji": "🥝", "name": "Kiwi" },
+          { "id": 8, "emoji": "🍒", "name": "Cherries" },
+          { "id": 9, "emoji": "🍋", "name": "Lemon" },
+          { "id": 10, "emoji": "🍉", "name": "Watermelon" },
+          { "id": 11, "emoji": "🥭", "name": "Mango" },
+          { "id": 12, "emoji": "🍈", "name": "Melon" },
+          { "id": 13, "emoji": "🍐", "name": "Pear" },
+          { "id": 14, "emoji": "🍏", "name": "Green Apple" },
+          { "id": 15, "emoji": "🍅", "name": "Tomato" },
+          { "id": 16, "emoji": "🥑", "name": "Avocado" },
+          { "id": 17, "emoji": "🥒", "name": "Cucumber" },
+          { "id": 18, "emoji": "🌽", "name": "Corn" },
+          { "id": 19, "emoji": "🥕", "name": "Carrot" },
+          { "id": 20, "emoji": "🥔", "name": "Potato" },
+          { "id": 21, "emoji": "🧀", "name": "Cheese" },
+          { "id": 22, "emoji": "🍕", "name": "Pizza" },
+          { "id": 23, "emoji": "🍔", "name": "Burger" },
+          { "id": 24, "emoji": "🍟", "name": "Fries" },
+          { "id": 25, "emoji": "🌮", "name": "Taco" },
+          { "id": 26, "emoji": "🍣", "name": "Sushi" },
+          { "id": 27, "emoji": "🍩", "name": "Donut" },
+          { "id": 28, "emoji": "🍦", "name": "Ice Cream" },
+          { "id": 29, "emoji": "🍫", "name": "Chocolate" },
+          { "id": 30, "emoji": "🍭", "name": "Lollipop" },
+          { "id": 31, "emoji": "🥞", "name": "Pancakes" },
+          { "id": 32, "emoji": "🥨", "name": "Pretzel" },
+          { "id": 33, "emoji": "🥣", "name": "Cereal" },
+          { "id": 34, "emoji": "🍜", "name": "Noodles" },
+          { "id": 35, "emoji": "🍤", "name": "Tempura" }
+        ]
+      }
+    },
+    "nature": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          { "id": 0, "emoji": "🌲", "name": "Evergreen Tree" },
+          { "id": 1, "emoji": "🌵", "name": "Cactus" },
+          { "id": 2, "emoji": "🌿", "name": "Herb" },
+          { "id": 3, "emoji": "🍀", "name": "Four Leaf Clover" },
+          { "id": 4, "emoji": "🍁", "name": "Maple Leaf" },
+          { "id": 5, "emoji": "🍄", "name": "Mushroom" },
+          { "id": 6, "emoji": "🔥", "name": "Fire" },
+          { "id": 7, "emoji": "🌊", "name": "Water Wave" }
+        ]
+      },
+      "medium": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🌲", "name": "Evergreen Tree" },
+          { "id": 1, "emoji": "🌵", "name": "Cactus" },
+          { "id": 2, "emoji": "🌿", "name": "Herb" },
+          { "id": 3, "emoji": "🍀", "name": "Four Leaf Clover" },
+          { "id": 4, "emoji": "🍁", "name": "Maple Leaf" },
+          { "id": 5, "emoji": "🍄", "name": "Mushroom" },
+          { "id": 6, "emoji": "🔥", "name": "Fire" },
+          { "id": 7, "emoji": "🌊", "name": "Water Wave" },
+          { "id": 8, "emoji": "🌋", "name": "Volcano" },
+          { "id": 9, "emoji": "🏔️", "name": "Snow-Capped Mountain" },
+          { "id": 10, "emoji": "🌅", "name": "Sunrise" },
+          { "id": 11, "emoji": "🌈", "name": "Rainbow" }
+        ]
+      },
+      "hard": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🌲", "name": "Evergreen Tree" },
+          { "id": 1, "emoji": "🌵", "name": "Cactus" },
+          { "id": 2, "emoji": "🌿", "name": "Herb" },
+          { "id": 3, "emoji": "🍀", "name": "Four Leaf Clover" },
+          { "id": 4, "emoji": "🍁", "name": "Maple Leaf" },
+          { "id": 5, "emoji": "🍄", "name": "Mushroom" },
+          { "id": 6, "emoji": "🔥", "name": "Fire" },
+          { "id": 7, "emoji": "🌊", "name": "Water Wave" },
+          { "id": 8, "emoji": "🌋", "name": "Volcano" },
+          { "id": 9, "emoji": "🏔️", "name": "Snow-Capped Mountain" },
+          { "id": 10, "emoji": "🌅", "name": "Sunrise" },
+          { "id": 11, "emoji": "🌈", "name": "Rainbow" },
+          { "id": 12, "emoji": "🌻", "name": "Sunflower" },
+          { "id": 13, "emoji": "🌼", "name": "Blossom" },
+          { "id": 14, "emoji": "🌸", "name": "Cherry Blossom" },
+          { "id": 15, "emoji": "🌺", "name": "Hibiscus" },
+          { "id": 16, "emoji": "🌴", "name": "Palm Tree" },
+          { "id": 17, "emoji": "🌌", "name": "Milky Way" }
+        ]
+      }
+    },
+    "space": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          { "id": 0, "emoji": "🚀", "name": "Rocket" },
+          { "id": 1, "emoji": "🛰️", "name": "Satellite" },
+          { "id": 2, "emoji": "🌕", "name": "Full Moon" },
+          { "id": 3, "emoji": "☀️", "name": "Sun" },
+          { "id": 4, "emoji": "🌌", "name": "Milky Way" },
+          { "id": 5, "emoji": "☄️", "name": "Comet" },
+          { "id": 6, "emoji": "✨", "name": "Sparkles" },
+          { "id": 7, "emoji": "🛸", "name": "Flying Saucer" }
+        ]
+      },
+      "medium": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🚀", "name": "Rocket" },
+          { "id": 1, "emoji": "🛰️", "name": "Satellite" },
+          { "id": 2, "emoji": "🌕", "name": "Full Moon" },
+          { "id": 3, "emoji": "☀️", "name": "Sun" },
+          { "id": 4, "emoji": "🌌", "name": "Milky Way" },
+          { "id": 5, "emoji": "☄️", "name": "Comet" },
+          { "id": 6, "emoji": "✨", "name": "Sparkles" },
+          { "id": 7, "emoji": "🛸", "name": "Flying Saucer" },
+          { "id": 8, "emoji": "🌍", "name": "Earth" },
+          { "id": 9, "emoji": "🪐", "name": "Ringed Planet" },
+          { "id": 10, "emoji": "🔭", "name": "Telescope" },
+          { "id": 11, "emoji": "👩‍🚀", "name": "Astronaut" }
+        ]
+      },
+      "hard": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "🚀", "name": "Rocket" },
+          { "id": 1, "emoji": "🛰️", "name": "Satellite" },
+          { "id": 2, "emoji": "🌕", "name": "Full Moon" },
+          { "id": 3, "emoji": "☀️", "name": "Sun" },
+          { "id": 4, "emoji": "🌌", "name": "Milky Way" },
+          { "id": 5, "emoji": "☄️", "name": "Comet" },
+          { "id": 6, "emoji": "✨", "name": "Sparkles" },
+          { "id": 7, "emoji": "🛸", "name": "Flying Saucer" },
+          { "id": 8, "emoji": "🌍", "name": "Earth" },
+          { "id": 9, "emoji": "🪐", "name": "Ringed Planet" },
+          { "id": 10, "emoji": "🔭", "name": "Telescope" },
+          { "id": 11, "emoji": "👩‍🚀", "name": "Astronaut" },
+          { "id": 12, "emoji": "👽", "name": "Alien" },
+          { "id": 13, "emoji": "✴️", "name": "Eight-Pointed Star" },
+          { "id": 14, "emoji": "⭐", "name": "Star" },
+          { "id": 15, "emoji": "🌟", "name": "Glowy Star" },
+          { "id": 16, "emoji": "💫", "name": "Dizzy" },
+          { "id": 17, "emoji": "🌙", "name": "Crescent Moon" },
+          { "id": 18, "emoji": "🌟", "name": "Glowing Star" },
+          { "id": 19, "emoji": "☄️", "name": "Comet" },
+          { "id": 20, "emoji": "🌑", "name": "New Moon" },
+          { "id": 21, "emoji": "🌒", "name": "Waxing Crescent" },
+          { "id": 22, "emoji": "🌓", "name": "First Quarter Moon" },
+          { "id": 23, "emoji": "🌔", "name": "Waxing Gibbous" },
+          { "id": 24, "emoji": "🌕", "name": "Full Moon" },
+          { "id": 25, "emoji": "🌖", "name": "Waning Gibbous" },
+          { "id": 26, "emoji": "🌗", "name": "Last Quarter Moon" },
+          { "id": 27, "emoji": "🌘", "name": "Waning Crescent" },
+          { "id": 28, "emoji": "🎆", "name": "Fireworks" },
+          { "id": 29, "emoji": "🎇", "name": "Sparkler" },
+          { "id": 30, "emoji": "🌠", "name": "Shooting Star" },
+          { "id": 31, "emoji": "🛸", "name": "UFO" },
+          { "id": 32, "emoji": "🛰️", "name": "Satellite" },
+          { "id": 33, "emoji": "🔭", "name": "Telescope" },
+          { "id": 34, "emoji": "🌌", "name": "Galaxy" },
+          { "id": 35, "emoji": "👽", "name": "Alien" }
+        ]
+      }
+    },
+    "sports": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          { "id": 0, "emoji": "⚽", "name": "Soccer" },
+          { "id": 1, "emoji": "🏀", "name": "Basketball" },
+          { "id": 2, "emoji": "🏈", "name": "Football" },
+          { "id": 3, "emoji": "⚾", "name": "Baseball" },
+          { "id": 4, "emoji": "🥎", "name": "Softball" },
+          { "id": 5, "emoji": "🎾", "name": "Tennis" },
+          { "id": 6, "emoji": "🏐", "name": "Volleyball" },
+          { "id": 7, "emoji": "🏉", "name": "Rugby" }
+        ]
+      },
+      "medium": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "⚽", "name": "Soccer" },
+          { "id": 1, "emoji": "🏀", "name": "Basketball" },
+          { "id": 2, "emoji": "🏈", "name": "Football" },
+          { "id": 3, "emoji": "⚾", "name": "Baseball" },
+          { "id": 4, "emoji": "🥎", "name": "Softball" },
+          { "id": 5, "emoji": "🎾", "name": "Tennis" },
+          { "id": 6, "emoji": "🏐", "name": "Volleyball" },
+          { "id": 7, "emoji": "🏉", "name": "Rugby" },
+          { "id": 8, "emoji": "🎱", "name": "Pool" },
+          { "id": 9, "emoji": "🏓", "name": "Ping Pong" },
+          { "id": 10, "emoji": "🏸", "name": "Badminton" },
+          { "id": 11, "emoji": "🏒", "name": "Hockey" }
+        ]
+      },
+      "hard": {
+        "gridSize": 6,
+        "pairs": [
+          { "id": 0, "emoji": "⚽", "name": "Soccer" },
+          { "id": 1, "emoji": "🏀", "name": "Basketball" },
+          { "id": 2, "emoji": "🏈", "name": "Football" },
+          { "id": 3, "emoji": "⚾", "name": "Baseball" },
+          { "id": 4, "emoji": "🥎", "name": "Softball" },
+          { "id": 5, "emoji": "🎾", "name": "Tennis" },
+          { "id": 6, "emoji": "🏐", "name": "Volleyball" },
+          { "id": 7, "emoji": "🏉", "name": "Rugby" },
+          { "id": 8, "emoji": "🎱", "name": "Pool" },
+          { "id": 9, "emoji": "🏓", "name": "Ping Pong" },
+          { "id": 10, "emoji": "🏸", "name": "Badminton" },
+          { "id": 11, "emoji": "🏒", "name": "Hockey" },
+          { "id": 12, "emoji": "🏏", "name": "Cricket" },
+          { "id": 13, "emoji": "🥊", "name": "Boxing" },
+          { "id": 14, "emoji": "🥋", "name": "Martial Arts" },
+          { "id": 15, "emoji": "🏹", "name": "Archery" },
+          { "id": 16, "emoji": "🎣", "name": "Fishing" },
+          { "id": 17, "emoji": "⛸️", "name": "Skating" }
+        ]
+      }
+    }
+
+  }
+}

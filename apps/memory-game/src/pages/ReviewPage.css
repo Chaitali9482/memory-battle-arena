@@ -1,0 +1,197 @@
+.review-page {
+  height: 100vh;
+  overflow: hidden;
+  background: #1e1b3a; /* Deep purple background */
+  padding: 2rem 1.5rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.review-header {
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+}
+
+.review-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+.review-main {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0.5rem;
+}
+
+/* Premium Scrollbar */
+.review-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.review-main::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.review-main::-webkit-scrollbar-thumb {
+  background: rgba(217, 70, 239, 0.4);
+  border-radius: 10px;
+}
+
+.review-main::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 70, 239, 0.6);
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .review-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .review-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.review-card {
+  background: rgba(45, 45, 75, 0.5);
+  border: 2px solid #8e6d3f; /* Orange/Gold border */
+  border-radius: 24px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  border-color: #db9c3e;
+}
+
+.review-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.review-q {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.review-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.review-badge.retry {
+  color: #fcc16d;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.review-badge.success {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.review-a {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #db9c3e;
+  margin: 0.2rem 0;
+}
+
+.review-explanation p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+}
+
+.review-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-bottom: 2rem;
+  flex-shrink: 0;
+}
+
+.review-actions button {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-retry-pairs {
+  background: #d946ef; /* Bright pink */
+  color: white;
+  box-shadow: 0 8px 25px rgba(217, 70, 239, 0.3);
+}
+
+.btn-retry-pairs:hover {
+  background: #c026d3;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(217, 70, 239, 0.4);
+}
+
+.btn-back-menu {
+  background: white;
+  color: #1e1b3a;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+}
+
+.btn-back-menu:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.2);
+}
+
+.empty-review {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.2rem;
+  padding: 5rem 0;
+}
+
+/* Toast notifications are handled by Toast.tsx component */

@@ -1,0 +1,2 @@
+﻿apps/memory-game/src/pages/ResultPage.tsx(76,9): error TS6133: 'pairs' is declared but its value is never read.
+apps/memory-game/src/pages/ReviewPage.tsx(20,23): error TS6133: 'q' is declared but its value is never read.

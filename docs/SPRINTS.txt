@@ -1,0 +1,249 @@
+================================================================================
+PROJECT: Memory Battle Arena (React + NX Version)
+DOCUMENT: DEVELOPMENT SPRINTS & TIMELINE
+================================================================================
+
+Duration:    6–7 weeks (7 sprints: Sprint 0 through Sprint 6)
+Team Size:   1 developer
+Methodology: Agile (weekly sprints)
+Stack:       React (Vite) · TypeScript · NX Monorepo · CSS + Framer Motion · localStorage
+Effort:      ~180–220 hours
+
+================================================================================
+SPRINT 0 — SETUP & ARCHITECTURE
+Duration: 1 week
+================================================================================
+
+Goal:
+  Establish the project foundation, tooling, routing, and documentation.
+
+Key Deliverables:
+  ✓ NX Workspace
+  ✓ React App (memory-game)
+  ✓ Folder Structure
+  ✓ React Router (3 pages)
+  ✓ Base Layout & Global Styles
+
+Tasks:
+  - Create NX workspace & generate React app (memory-game)
+  - Setup folder structure:
+      components/
+      pages/
+      hooks/
+      services/
+      utils/
+      types/
+      data/
+  - Configure React Router: HomePage, GamePage, ResultPage
+  - Create base layout, global styles & gradient background
+  - Prepare documentation
+
+Acceptance Criteria:
+  ✓ Running React app
+  ✓ Clean project structure
+  ✓ Routing working
+
+================================================================================
+SPRINT 1 — CORE GAME ENGINE
+Duration: 1 week
+================================================================================
+
+Goal:
+  Build core game logic using React + TypeScript.
+
+Key Deliverables:
+  ✓ Tile.tsx component
+  ✓ Grid.tsx component (responsive)
+  ✓ useGame.ts hook (state + logic)
+  ✓ Flip & match logic
+  ✓ Move counter
+  ✓ Timer
+  ✓ Restart functionality
+
+Tasks:
+  - Build Tile.tsx and Grid.tsx components (responsive)
+  - Implement useGame.ts hook:
+      tiles, flippedTiles, matchedTiles, moves, timer, isProcessing
+  - Matching logic:
+      max 2 tiles open, match vs mismatch, flip-back delay (1.5s)
+  - Game completion detection & restart functionality
+  - Prevent rapid-click bugs with isProcessing flag
+
+Acceptance Criteria:
+  ✓ Tiles flip correctly
+  ✓ Matching logic works
+  ✓ Timer & moves accurate
+  ✓ No rapid-click bugs
+  ✓ Fully responsive grid
+
+================================================================================
+SPRINT 2 — FUN MODE
+Duration: 1 week
+================================================================================
+
+Goal:
+  Implement Fun Mode with themes and difficulty selection.
+
+Key Deliverables:
+  ✓ fun.json data file
+  ✓ Theme selection UI
+  ✓ Difficulty selection UI
+  ✓ Tile generation logic
+  ✓ Full Fun Mode gameplay
+
+Tasks:
+  - Create data/fun.json with themes: Animals, Food, Nature, Space, Sports
+  - Build theme selector and difficulty selector (Easy / Medium / Hard)
+  - Tile generation: duplicate emoji values, shuffle array
+  - Match logic: tile1.value === tile2.value
+  - Verify all difficulty levels adjust grid size correctly
+
+Acceptance Criteria:
+  ✓ Themes load correctly
+  ✓ Difficulty adjusts grid size
+  ✓ Matching works perfectly
+  ✓ Bug-free gameplay
+
+================================================================================
+SPRINT 3 — LEARNING MODE
+Duration: 1 week
+================================================================================
+
+Goal:
+  Implement subject-based Q&A matching with hints and revision.
+
+Key Deliverables:
+  ✓ learning.json data file
+  ✓ Subject → Topic → Difficulty selection flow
+  ✓ Q&A tile generation
+  ✓ Explanation system
+  ✓ Hint system (3 per game)
+  ✓ Post-game revision screen
+
+Tasks:
+  - Create data/learning.json:
+      Subjects: Math, Science, History, Geography,
+                Indian History, Indian Geography
+  - Topics per subject with easy / medium / hard difficulty tiers
+  - Generate Q (question tile) + A (answer tile) pairs using pairId linking
+  - Match logic: tile1.pairId === tile2.pairId
+  - Add explanation on match, 3-hint system, and post-game revision screen
+
+Acceptance Criteria:
+  ✓ Q&A matching works
+  ✓ Explanations display on match
+  ✓ Hints function correctly
+  ✓ Revision screen accurate
+
+================================================================================
+SPRINT 4 — GAMIFICATION & EXPERIENCE
+Duration: 1 week
+================================================================================
+
+Goal:
+  Enhance game feel, engagement, and reward systems.
+
+Key Deliverables:
+  ✓ Framer Motion animations
+  ✓ Sound system
+  ✓ Score system
+  ✓ High score (localStorage)
+  ✓ Win screen with confetti
+  ✓ Star rating (1–5 stars)
+
+Tasks:
+  - Add 3D flip, match glow & wrong shake animations via Framer Motion
+  - Implement sound system: flip, match, wrong, win + mute toggle
+  - Score calculation based on time + moves with wrong-attempt penalties
+  - Persist high scores to localStorage, show confetti on completion
+  - Star rating system (1–5 stars) for both Fun and Learning modes
+
+Star Rating Logic:
+
+  Fun Mode:
+    ★★★★★  Moves ≤ 8,  Time ≤ 1:00
+    ★★★★   Moves ≤ 12, Time ≤ 2:00
+    ★★★    Moves ≤ 16, Time ≤ 3:00
+    ★★     Moves ≤ 20, Time ≤ 4:00
+    ★      Any other score
+
+  Learning Mode:
+    ★★★★★  Accuracy ≥ 95%, Moves ≤ 8
+    ★★★★   Accuracy ≥ 85%, Moves ≤ 12
+    ★★★    Accuracy ≥ 75%, Moves ≤ 16
+    ★★     Accuracy ≥ 60%, Moves ≤ 20
+    ★      Any other score
+
+Acceptance Criteria:
+  ✓ Animations run at 60 FPS
+  ✓ Sounds synced correctly
+  ✓ Scores calculated correctly
+  ✓ High scores persist across sessions
+
+================================================================================
+SPRINT 5 — UI POLISH & RESPONSIVENESS
+Duration: 1 week
+================================================================================
+
+Goal:
+  Make the game visually premium and fully responsive on all devices.
+
+Key Deliverables:
+  ✓ Responsive grid (mobile-first)
+  ✓ Mobile layout with large tap targets
+  ✓ Loading screen
+  ✓ Smooth page transitions
+  ✓ Clean & modern UI
+
+Tasks:
+  - Refine colors, typography, and spacing across all screens
+  - Ensure responsive grid with large tap targets (min 44×44px) on mobile
+  - Guarantee no scrolling required / no overflow on any device
+  - Add loading screen and smooth page transitions
+
+Acceptance Criteria:
+  ✓ Works on all devices (mobile, tablet, desktop)
+  ✓ Clean and modern UI
+  ✓ No layout issues or overflow
+
+================================================================================
+SPRINT 6 — TESTING & OPTIMIZATION
+Duration: 1 week
+================================================================================
+
+Goal:
+  Ensure production readiness — bug-free, optimized, documented.
+
+Key Deliverables:
+  ✓ Full QA pass (all modes, subjects, difficulties)
+  ✓ Edge case handling
+  ✓ Render & animation optimization
+  ✓ Clean codebase
+  ✓ Final README
+
+Tasks:
+  - Test all modes, subjects/topics, and difficulty levels end-to-end
+  - Handle edge cases:
+      rapid clicks, same-tile double-click, restart mid-game
+  - Optimize rendering, animations, and memory usage
+  - Remove debug logs, clean up codebase, finalize README
+
+Acceptance Criteria:
+  ✓ No bugs found
+  ✓ Smooth performance
+  ✓ Clean codebase
+  ✓ Ready for deployment
+
+================================================================================
+FINAL OUTPUT
+================================================================================
+
+  ✓ Fully functional dual-mode game (Fun + Learning)
+  ✓ Clean React + TypeScript architecture
+  ✓ NX monorepo structured
+  ✓ Gamified experience with scoring, stars & confetti
+  ✓ Educational reinforcement system with hints & revision
+  ✓ Responsive across all devices
+  ✓ Production-ready quality
+
+================================================================================

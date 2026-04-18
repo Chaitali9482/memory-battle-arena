@@ -1,0 +1,559 @@
+================================================================================
+PROJECT: Memory Battle Arena
+DOCUMENT: DATA SCHEMA & STRUCTURE
+================================================================================
+
+================================================================================
+1. DATA TYPES & STRUCTURES
+================================================================================
+
+A. GAME STATE OBJECT
+
+gameState = {
+  mode: "fun" | "learning",                    // Current game mode
+  isActive: boolean,                           // Game in progress
+  isProcessing: boolean,                       // Processing interaction (prevent clicks)
+  isComplete: boolean,                         // Game completed
+  
+  // Tile Management
+  tiles: [
+    {
+      id: number,                              // Unique tile identifier (0-15)
+      value: string | object,                  // Emoji (fun) or Question/Answer (learning)
+      pairId: number,                          // Pair matching ID
+      isFlipped: boolean,                      // Flipped state
+      isMatched: boolean                       // Successfully matched
+    }
+  ],
+  
+  // Gameplay Tracking
+  flippedTiles: [number],                      // IDs of currently flipped tiles (max 2)
+  matchedTiles: [number],                      // IDs of successfully matched tiles
+  moves: number,                               // Number of pair attempts
+  hints: {
+    remaining: number,                         // Hints left (Learning mode)
+    used: number                               // Hints used count
+  },
+  
+  // Timing
+  timer: {
+    seconds: number,                           // Elapsed seconds
+    isRunning: boolean                         // Timer running
+  },
+  
+  // Configuration
+  config: {
+    theme: string,                             // Fun mode theme (animals, food, etc.)
+    subject: string,                           // Learning mode subject (math, science, etc.)
+    topic: string,                             // Learning mode topic (addition, etc.)
+    difficulty: "easy" | "medium" | "hard",    // Selected difficulty
+    gridSize: number,                          // Grid dimension (4 = 4x4)
+    soundEnabled: boolean                      // Audio toggle
+  },
+  
+  // Statistics
+  stats: {
+    totalPairs: number,                        // Total matching pairs
+    matchedCount: number,                      // Matched pairs count
+    accuracy: number,                          // Percentage (Learning mode)
+    startTime: Date,                           // Game start timestamp
+    endTime: Date | null                       // Game end timestamp
+  }
+}
+
+================================================================================
+2. FUN MODE DATA SCHEMA (fun.json)
+================================================================================
+
+Structure:
+
+{
+  "themes": {
+    "animals": {
+      "easy": {
+        "gridSize": 4,                         // 4x4 = 16 tiles = 8 pairs
+        "pairs": [
+          {
+            "id": 0,
+            "emoji": "🐶",
+            "name": "Dog",
+            "category": "animal"
+          },
+          {
+            "id": 1,
+            "emoji": "🐱",
+            "name": "Cat",
+            "category": "animal"
+          },
+          // ... more pairs (minimum 8 for 4x4 grid)
+        ]
+      },
+      
+      "medium": {
+        "gridSize": 6,                         // 6x4 = 24 tiles = 12 pairs (or 5x4 = 20)
+        "pairs": [
+          // ... 12 pairs
+        ]
+      },
+      
+      "hard": {
+        "gridSize": 6,                         // 6x4 = 24 tiles = 12 pairs
+        "pairs": [
+          // ... 12 pairs with more variety
+        ]
+      }
+    },
+    
+    "food": {
+      "easy": {
+        "gridSize": 4,
+        "pairs": [
+          {
+            "id": 0,
+            "emoji": "🍕",
+            "name": "Pizza",
+            "category": "food"
+          },
+          // ...
+        ]
+      },
+      // ... medium, hard
+    },
+    
+    "nature": {
+      // Similar structure
+    },
+    
+    "sports": {
+      // Similar structure
+    }
+  }
+}
+
+Tile Generation Logic (Fun Mode):
+
+For each pair in selected theme/difficulty:
+  1. Create Tile 1: { id: 0, value: "🐶", pairId: 0, isFlipped: false, isMatched: false }
+  2. Create Tile 2: { id: 1, value: "🐶", pairId: 0, isFlipped: false, isMatched: false }
+  3. Duplicate process for all pairs
+  4. Shuffle entire tiles array
+  5. Render tiles in grid
+
+Matching Logic:
+  tile1.value === tile2.value
+
+================================================================================
+3. LEARNING MODE DATA SCHEMA (learning.json)
+================================================================================
+
+Structure:
+
+{
+  "subjects": {
+    "math": {
+      "name": "Mathematics",
+      "description": "Learn mathematics through memory matching",
+      
+      "topics": {
+        "addition": {
+          "name": "Addition",
+          "description": "Basic addition problems",
+          
+          "easy": [
+            {
+              "pairId": 0,
+              "question": "2 + 3",
+              "answer": "5",
+              "explanation": "2 plus 3 equals 5",
+              "difficulty": 1
+            },
+            {
+              "pairId": 1,
+              "question": "1 + 4",
+              "answer": "5",
+              "explanation": "1 plus 4 equals 5",
+              "difficulty": 1
+            },
+            // ... more Q&A pairs (minimum 3-4 for easy)
+          ],
+          
+          "medium": [
+            {
+              "pairId": 0,
+              "question": "12 + 8",
+              "answer": "20",
+              "explanation": "12 plus 8 equals 20",
+              "difficulty": 2
+            },
+            // ... more Q&A pairs (minimum 5-6 for medium)
+          ],
+          
+          "hard": [
+            {
+              "pairId": 0,
+              "question": "Complex fraction addition",
+              "answer": "Result",
+              "explanation": "Detailed explanation",
+              "difficulty": 3
+            },
+            // ... more Q&A pairs (minimum 7-8 for hard)
+          ]
+        },
+        
+        "subtraction": {
+          // Similar structure
+        },
+        
+        "multiplication": {
+          // Similar structure
+        }
+      }
+    },
+    
+    "science": {
+      "name": "Science",
+      "description": "Learn science facts through memory matching",
+      
+      "topics": {
+        "biology": {
+          "name": "Biology",
+          
+          "easy": [
+            {
+              "pairId": 0,
+              "question": "What is the powerhouse of the cell?",
+              "answer": "Mitochondria",
+              "explanation": "Mitochondria produce energy (ATP) for cells",
+              "difficulty": 1,
+              "keywords": ["cell", "energy", "biology"]
+            },
+            // ...
+          ],
+          // medium, hard
+        }
+      }
+    },
+    
+    "history": {
+      // Similar structure
+    },
+    
+    "geography": {
+      // Similar structure
+    }
+  }
+}
+
+Tile Generation Logic (Learning Mode):
+
+For each Q&A pair in selected subject/topic/difficulty:
+  1. Create Tile Q: { 
+       id: idx*2, 
+       value: { type: "question", text: "2 + 3" }, 
+       pairId: idx, 
+       isFlipped: false, 
+       isMatched: false 
+     }
+  2. Create Tile A: { 
+       id: idx*2+1, 
+       value: { type: "answer", text: "5" }, 
+       pairId: idx, 
+       isFlipped: false, 
+       isMatched: false 
+     }
+  3. Repeat for all Q&A pairs
+  4. Shuffle entire tiles array
+  5. Render tiles in grid
+
+Matching Logic:
+  tile1.pairId === tile2.pairId
+
+================================================================================
+4. TILE OBJECT SCHEMA
+================================================================================
+
+Detailed Tile Structure:
+
+{
+  // Identity
+  id: number,                          // Unique identifier in current game (0-15 for 4x4)
+  
+  // Content (mode-specific)
+  value: {
+    // Fun Mode
+    emoji: string,                     // Single emoji character
+    name: string,                      // Human-readable name
+    
+    OR
+    
+    // Learning Mode
+    type: "question" | "answer",       // Tile type
+    text: string,                      // Question or answer text
+    explanation: string                // Educational explanation (answers only)
+  },
+  
+  // Matching
+  pairId: number,                      // Links matching tiles together
+  
+  // State
+  isFlipped: boolean,                  // Currently showing content
+  isMatched: boolean,                  // Successfully matched
+  isLocked: boolean,                   // Cannot be clicked (during animation)
+  
+  // UI
+  position: {
+    row: number,
+    col: number
+  },
+  
+  // Animation
+  animationState: "idle" | "flipping" | "matched" | "error"
+}
+
+================================================================================
+5. CONFIGURATION DATA
+================================================================================
+
+User Configuration (persisted in sessionStorage):
+
+{
+  gameMode: "fun" | "learning",
+  
+  // Fun Mode Config
+  fun: {
+    selectedTheme: "animals" | "food" | "nature" | "sports",
+    selectedDifficulty: "easy" | "medium" | "hard",
+    gridSize: 4 | 6 | 8
+  },
+  
+  // Learning Mode Config
+  learning: {
+    selectedSubject: "math" | "science" | "history" | "geography",
+    selectedTopic: "addition" | "biology" | "worldWars" | "capitals",
+    selectedDifficulty: "easy" | "medium" | "hard"
+  },
+  
+  // Global Config
+  sound: {
+    enabled: boolean,
+    volume: number (0-1)
+  },
+  
+  accessibility: {
+    highContrast: boolean,
+    largeText: boolean,
+    animationsEnabled: boolean
+  }
+}
+
+================================================================================
+6. STATISTICS & SCORES
+================================================================================
+
+Game Results Schema:
+
+{
+  gameId: string,                      // Unique game session ID
+  mode: "fun" | "learning",
+  timestamp: Date,
+  
+  configuration: {
+    theme: string,                     // Fun mode
+    subject: string,                   // Learning mode
+    topic: string,                     // Learning mode
+    difficulty: string
+  },
+  
+  performance: {
+    totalMoves: number,
+    totalTime: number,                 // In seconds
+    totalTiles: number,
+    matchedTiles: number,
+    
+    // Learning Mode Only
+    accuracy: number,                  // Percentage (0-100)
+    correctMatches: number,
+    incorrectMatches: number,
+    hintsUsed: number
+  },
+  
+  rating: {
+    stars: number,                     // 1-5 stars
+    message: string                    // "Great Job!", "Nice!", etc.
+  }
+}
+
+Star Calculation Formula (Fun Mode):
+
+function calculateStars(moves, timeSeconds, totalPairs) {
+  const perfectMoves = totalPairs;
+  const acceptableMoves = totalPairs * 1.5;
+  const perfectTime = totalPairs * 15;  // 15 seconds per pair
+  const acceptableTime = totalPairs * 30;
+  
+  const moveScore = moves <= acceptableMoves ? 
+    (perfectMoves / moves) : 0.5;
+  
+  const timeScore = timeSeconds <= acceptableTime ? 
+    (perfectTime / timeSeconds) : 0.5;
+  
+  const combinedScore = (moveScore + timeScore) / 2;
+  
+  if (combinedScore >= 1.0) return 5;
+  if (combinedScore >= 0.8) return 4;
+  if (combinedScore >= 0.6) return 3;
+  if (combinedScore >= 0.4) return 2;
+  return 1;
+}
+
+Star Calculation Formula (Learning Mode):
+
+function calculateStars(accuracy, moves, hintsUsed, totalPairs) {
+  let baseScore = (accuracy / 100) * 5;  // 0-5
+  
+  const movesFactor = (totalPairs * 1.5) / moves;  // Less moves = higher
+  const hintsFactor = 1 - (hintsUsed * 0.1);      // Fewer hints = higher
+  
+  const finalScore = baseScore * movesFactor * hintsFactor;
+  
+  return Math.min(5, Math.ceil(finalScore));
+}
+
+================================================================================
+7. ERROR HANDLING DATA
+================================================================================
+
+Error States:
+
+{
+  type: "data_error" | "load_error" | "validation_error" | "game_error",
+  severity: "low" | "medium" | "high",
+  message: string,
+  recoveryOption: "reload" | "mainMenu" | "retry" | "none"
+}
+
+Common Errors:
+
+1. JSON File Not Found
+   {
+     type: "load_error",
+     message: "Failed to load game data. Please check your files.",
+     recoveryOption: "retry"
+   }
+
+2. Invalid Tile Data
+   {
+     type: "validation_error",
+     message: "Game data is corrupted. Returning to main menu.",
+     recoveryOption: "mainMenu"
+   }
+
+3. Insufficient Pairs
+   {
+     type: "data_error",
+     message: "Not enough pairs for selected difficulty.",
+     recoveryOption: "reload"
+   }
+
+================================================================================
+8. LOCAL STORAGE SCHEMA
+================================================================================
+
+Persisted Data:
+
+localStorage = {
+  // User Preferences
+  "mb_soundEnabled": boolean,
+  "mb_volumeLevel": number (0-1),
+  "mb_highContrast": boolean,
+  "mb_largeText": boolean,
+  "mb_animationsEnabled": boolean,
+  
+  // Game History (last 10 games)
+  "mb_gameHistory": JSON.stringify([
+    {
+      gameId: string,
+      mode: string,
+      difficulty: string,
+      moves: number,
+      time: number,
+      accuracy: number,
+      stars: number,
+      timestamp: ISO string
+    }
+  ]),
+  
+  // Player Stats (aggregate)
+  "mb_playerStats": JSON.stringify({
+    totalGamesPlayed: number,
+    totalTime: number,
+    averageAccuracy: number,
+    bestScore: number
+  })
+}
+
+Session Storage (cleared on tab close):
+
+sessionStorage = {
+  // Current game state (for page refresh recovery)
+  "mb_currentGame": JSON.stringify(gameState),
+  "mb_gameConfig": JSON.stringify(userConfig)
+}
+
+================================================================================
+9. API RESPONSE SCHEMA (Mock)
+================================================================================
+
+API GET /data/fun/:theme/:difficulty
+
+Response:
+{
+  success: boolean,
+  data: {
+    theme: string,
+    difficulty: string,
+    pairs: [
+      {
+        id: number,
+        emoji: string,
+        name: string
+      }
+    ],
+    gridSize: number,
+    message: string
+  },
+  timestamp: ISO string
+}
+
+API GET /data/learning/:subject/:topic/:difficulty
+
+Response:
+{
+  success: boolean,
+  data: {
+    subject: string,
+    topic: string,
+    difficulty: string,
+    pairs: [
+      {
+        pairId: number,
+        question: string,
+        answer: string,
+        explanation: string
+      }
+    ],
+    totalPairs: number,
+    message: string
+  },
+  timestamp: ISO string
+}
+
+Error Response:
+{
+  success: false,
+  error: string,
+  code: "NOT_FOUND" | "INVALID_PARAM" | "SERVER_ERROR",
+  timestamp: ISO string
+}
+
+================================================================================

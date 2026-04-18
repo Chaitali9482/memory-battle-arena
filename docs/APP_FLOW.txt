@@ -1,0 +1,430 @@
+================================================================================
+PROJECT: Memory Battle Arena
+DOCUMENT: APPLICATION FLOW & USER JOURNEY
+================================================================================
+
+================================================================================
+1. HIGH-LEVEL APPLICATION FLOW
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      APP INITIALIZATION                         │
+│          (Load HTML, CSS, JS - Initialize State)               │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    MAIN MENU SCREEN                             │
+│         (Display: Title, Mode Selection, Settings)              │
+│                                                                 │
+│         ┌──────────────────┐      ┌──────────────────┐         │
+│         │   FUN MODE       │      │  LEARNING MODE   │         │
+│         │  (Visual Match)   │      │  (Q&A Match)     │         │
+│         └────────┬─────────┘      └────────┬─────────┘         │
+└──────────────────┼──────────────────────────┼──────────────────┘
+                   │                          │
+         ┌─────────▼──────┐        ┌──────────▼────────┐
+         │                │        │                   │
+         ▼                ▼        ▼                   ▼
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ FUN MODE CONFIG  │  │ LEARN MODE CONFIG│  │ THEME SELECTION  │
+│ - Theme select   │  │ - Subject select │  │ (for Fun Mode)   │
+│ - Difficulty     │  │ - Topic select   │  │                  │
+└────────┬─────────┘  │ - Difficulty     │  └──────┬───────────┘
+         │            └────────┬─────────┘         │
+         └──────────┬──────────┘                    │
+                    │                               │
+                    ▼                               │
+         ┌──────────────────┐                       │
+         │ LOAD GAME DATA   │◄──────────────────────┘
+         │ (fun.json or     │
+         │  learning.json)  │
+         └────────┬─────────┘
+                   │
+                   ▼
+        ┌──────────────────────┐
+        │ GENERATE TILE GRID   │
+        │ - Create tiles       │
+        │ - Shuffle tiles      │
+        │ - Assign IDs/values  │
+        └────────┬─────────────┘
+                 │
+                 ▼
+        ┌──────────────────────┐
+        │   GAMEPLAY LOOP      │
+        │ - Render grid        │
+        │ - Listen for clicks  │
+        │ - Check matches      │
+        │ - Update score       │
+        │ - Play sounds        │
+        │ - Show animations    │
+        └────────┬─────────────┘
+                 │
+         ┌───────┴────────┐
+         │                │
+    Game Complete?      Game Active
+         │                │
+         │                └──────┐
+         │                       │
+         │         ┌─────────────┘
+         │         │
+         ▼         ▼
+    ┌──────────────────────┐
+    │ COMPLETION SCREEN    │
+    │ - Final stats        │
+    │ - Moves/time         │
+    │ - Score/accuracy     │
+    │ - Confetti animation │
+    └────────┬─────────────┘
+             │
+      ┌──────┴──────┐
+      │             │
+   Retry        Main Menu
+      │             │
+      └─────┬───────┘
+            │
+            ▼
+       ┌──────────────────┐
+       │   MAIN MENU      │
+       │  (Start again)   │
+       └──────────────────┘
+
+================================================================================
+2. FUN MODE USER JOURNEY
+================================================================================
+
+User Interaction Flow:
+
+STEP 1: LAUNCH
+  User opens app
+  → See main menu with "Fun Mode" and "Learning Mode" buttons
+  → Click "Fun Mode"
+
+STEP 2: CONFIGURATION
+  User sees Fun Mode config screen
+  Display options:
+    - Theme selection (dropdown: Animals, Food, Nature, Sports, etc.)
+    - Difficulty selection (radio: Easy, Medium, Hard)
+    - Start button
+  
+  User selects:
+    Theme: "Animals"
+    Difficulty: "Medium"
+  → Click "Start Game"
+
+STEP 3: GAME INITIALIZATION
+  System loads animals theme from fun.json
+  System generates 16 tiles (8 matching pairs)
+  System shuffles tiles randomly
+  Screen displays:
+    - 4x4 grid of face-down tiles
+    - Move counter: 0
+    - Timer: 0:00 (will start on first click)
+    - Mute button (top right)
+    - Back to menu button
+
+STEP 4: ACTIVE GAMEPLAY
+  User clicks first tile
+    → Timer starts
+    → Tile flips with animation
+    → Shows emoji (e.g., 🐶)
+    → Sound plays (flip sound)
+  
+  User clicks second tile
+    → Tile flips with animation
+    → Shows emoji (e.g., 🐱)
+    → Sound plays (flip sound)
+    → System checks: Does 🐶 === 🐱? NO
+    → Move counter increments to 1
+    → Both tiles shake (error animation)
+    → After 1.5s delay, both tiles flip back
+    → Flip sound plays again
+  
+  User clicks third tile (previously clicked tile 1)
+    → Tile flips showing 🐶
+    → User clicks fourth tile
+    → Tile flips showing 🐶
+    → System checks: 🐶 === 🐶? YES
+    → Matched! Tiles stay open
+    → Both tiles glow and bounce
+    → Match sound plays
+    → "Nice!" message appears
+    → Move counter increments to 2
+
+STEP 5: CONTINUED GAMEPLAY
+  Repeat steps 4 until all 8 pairs are matched
+  
+STEP 6: GAME COMPLETION
+  All tiles matched
+  → Timer stops
+  → System displays completion screen:
+     - "Congratulations!"
+     - Final stats:
+       * Moves: 18
+       * Time: 2:34
+       * Accuracy: 88%
+       * Rating: ⭐⭐⭐⭐ (4 stars)
+     - Confetti animation plays
+     - Victory sound plays
+  
+  Two options:
+    - "Play Again" → Return to configuration
+    - "Main Menu" → Return to main menu
+
+================================================================================
+3. LEARNING MODE USER JOURNEY
+================================================================================
+
+User Interaction Flow:
+
+STEP 1: LAUNCH
+  User opens app
+  → See main menu
+  → Click "Learning Mode"
+
+STEP 2: SUBJECT SELECTION
+  Display dropdown with subjects:
+    - Math
+    - Science
+    - History
+    - Literature
+    - Geography
+  User selects: "Math"
+  → Click Next
+
+STEP 3: TOPIC SELECTION
+  Based on "Math" subject, display topics:
+    - Addition
+    - Subtraction
+    - Multiplication
+    - Division
+    - Fractions
+  User selects: "Addition"
+  → Click Next
+
+STEP 4: DIFFICULTY SELECTION
+  Display difficulty options:
+    - Easy (3-4 questions)
+    - Medium (5-6 questions)
+    - Hard (7-8 questions)
+  User selects: "Medium"
+  → Click "Start Learning"
+
+STEP 5: GAME INITIALIZATION
+  System loads learning.json → Math → Addition → Medium
+  System creates 12 tiles (6 Q&A pairs):
+    Tile 1 (Front): "2 + 3"
+    Tile 2 (Front): "What is 2 plus 3?"
+    Tile 3 (Front): "5"
+    ...
+  System shuffles tiles
+  Display:
+    - 4x3 grid (12 tiles)
+    - Move counter: 0
+    - Timer: 0:00
+    - Hints remaining: 3
+    - Revision button
+    - Accuracy: 0/6
+    - Back button
+
+STEP 6: ACTIVE GAMEPLAY - FIRST CLICK
+  User clicks tile 1
+    → Tile flips showing "2 + 3"
+    → Flip sound plays
+    → Timer starts
+  
+STEP 7: ACTIVE GAMEPLAY - SECOND CLICK
+  User clicks tile 5
+    → Tile flips showing "7"
+    → Flip sound plays
+    → System checks: Do tile 1 and tile 5 have same pairId? NO
+    → Wrong sound plays
+    → Both tiles shake
+    → "Try again!" message appears
+    → Move counter: 1
+    → Both tiles flip back after 1.5s
+
+STEP 8: HINT SYSTEM
+  User clicks "Hint" button
+    → System randomly picks an unmatched pair
+    → Briefly flips and reveals both tiles (2 seconds)
+    → "Here's a hint!" message
+    → Tiles flip back
+    → Hints remaining: 2
+
+STEP 9: CONTINUED GAMEPLAY
+  User clicks tile 1: "2 + 3"
+  User clicks tile 3: "5"
+    → System checks: pairId match? YES
+    → Tiles glow and bounce
+    → Match sound plays
+    → "Correct! Explanation: 2 plus 3 equals 5" appears
+    → Accuracy: 1/6
+    → Move counter: X
+
+STEP 10: GAME COMPLETION
+  All 6 pairs matched
+  System displays completion screen:
+    - "Great Job!"
+    - Final stats:
+      * Moves: 15
+      * Time: 3:45
+      * Accuracy: 83% (5 out of 6 correct on first try)
+      * Rating: ⭐⭐⭐ (3 stars)
+    - Confetti animation
+    - Victory sound
+  
+  Options:
+    - "Revise Answers" → Shows all Q&A with explanations
+    - "Retry Incorrect" → Play again with only incorrect pairs
+    - "New Topic" → Return to topic selection
+    - "Main Menu" → Return to main menu
+
+================================================================================
+4. STATE MACHINE DIAGRAM
+================================================================================
+
+Game States:
+
+  IDLE
+    │
+    ├─ User clicks mode button
+    │
+    ▼
+  MODE_CONFIG (selecting theme/difficulty/subject/topic)
+    │
+    ├─ User clicks "Start Game"
+    │
+    ▼
+  GAME_LOADING (fetch data, generate tiles, shuffle)
+    │
+    ├─ Data loaded successfully
+    │
+    ▼
+  GAME_ACTIVE
+    │
+    ├─ Single tile flipped state (wait for second tile)
+    │
+    ├─ Two tiles flipped state (checking match)
+    │      │
+    │      ├─ Match found → Matched tiles remain open, continue GAME_ACTIVE
+    │      │
+    │      └─ No match → Flip back after delay, continue GAME_ACTIVE
+    │
+    ├─ User clicks hint/revision buttons (modal overlay)
+    │
+    ├─ All pairs matched
+    │
+    ▼
+  GAME_COMPLETE (show stats, confetti, sound)
+    │
+    ├─ User clicks "Play Again" → GAME_LOADING
+    │
+    └─ User clicks "Main Menu" → IDLE
+
+================================================================================
+5. INTERACTION PATTERNS
+================================================================================
+
+TILE CLICK INTERACTION:
+
+Normal Flow:
+  User clicks tile (not yet flipped, not locked)
+    → Prevent further clicks (isProcessing = true)
+    → Play flip sound
+    → Trigger flip animation (300ms)
+    → Reveal tile content
+    → Add tile ID to flippedTiles array
+    
+    If flippedTiles.length === 1:
+      → Wait for second click, unlock (isProcessing = false)
+    
+    If flippedTiles.length === 2:
+      → Lock tiles (isProcessing = true)
+      → Check if match (compare value or pairId)
+      
+      If match:
+        → Add to matchedTiles
+        → Play match sound
+        → Trigger glow/bounce animation
+        → Show "Correct!" message (Learning mode)
+        → Clear flippedTiles array
+        → Unlock (isProcessing = false)
+        
+        If all tiles matched:
+          → Set gameState.isComplete = true
+          → Show completion screen
+      
+      Else (no match):
+        → Play fail sound
+        → Trigger shake animation
+        → Show "Try again" message (Learning mode)
+        → After 1.5s delay:
+          → Flip both tiles back
+          → Clear flippedTiles array
+          → Increment moves counter
+          → Unlock (isProcessing = false)
+
+Edge Cases Handled:
+  - Same tile clicked twice → Prevented
+  - Click during animation → Ignored (isProcessing flag)
+  - Click during flip-back delay → Ignored (isProcessing flag)
+  - Rapid clicks → Queued, processed in order
+
+RESTART/RESET INTERACTION:
+
+User clicks "Restart" or "New Game":
+  → Clear all game state variables
+  → Reset move counter to 0
+  → Stop timer
+  → Reset flippedTiles array
+  → Reset matchedTiles array
+  → Regenerate tile grid
+  → Shuffle tiles
+  → Flip all tiles to back state
+  → Unlock interaction (isProcessing = false)
+  → Enable clicks
+  → Display ready state
+
+================================================================================
+6. GAME COMPLETION FLOW
+================================================================================
+
+Triggered When:
+  matchedTiles.length === totalPairs
+
+Actions:
+  1. Stop timer (record final time)
+  2. Disable all tile clicks
+  3. Calculate statistics:
+     - Final moves count
+     - Final time
+     - Accuracy percentage (for Learning mode)
+     - Star rating (1-5 stars)
+  4. Play victory sound
+  5. Show confetti animation (5-10 seconds)
+  6. Display completion modal:
+     - Title: "Congratulations!" or "Great Job!"
+     - Statistics
+     - Buttons:
+       * "Play Again" (restart same game config)
+       * "New Game" (return to configuration)
+       * "Main Menu" (return to main menu)
+
+Star Rating Logic:
+
+Fun Mode:
+  ⭐⭐⭐⭐⭐ (5 stars) - Moves ≤ 8, Time ≤ 1:00
+  ⭐⭐⭐⭐ (4 stars)   - Moves ≤ 12, Time ≤ 2:00
+  ⭐⭐⭐ (3 stars)     - Moves ≤ 16, Time ≤ 3:00
+  ⭐⭐ (2 stars)       - Moves ≤ 20, Time ≤ 4:00
+  ⭐ (1 star)         - Any other score
+
+Learning Mode:
+  ⭐⭐⭐⭐⭐ (5 stars) - Accuracy ≥ 95%, Moves ≤ 8
+  ⭐⭐⭐⭐ (4 stars)   - Accuracy ≥ 85%, Moves ≤ 12
+  ⭐⭐⭐ (3 stars)     - Accuracy ≥ 75%, Moves ≤ 16
+  ⭐⭐ (2 stars)       - Accuracy ≥ 60%, Moves ≤ 20
+  ⭐ (1 star)         - Any other score
+
+================================================================================

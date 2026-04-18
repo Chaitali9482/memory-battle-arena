@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "projects": {
+    "memory-game": "apps/memory-game"
+  }
+}
