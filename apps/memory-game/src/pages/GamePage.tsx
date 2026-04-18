@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useGame } from '../hooks/useGame'
 import { Grid } from '../components/Grid'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
@@ -148,21 +148,6 @@ const GamePage = () => {
             mode={mode}
             difficulty={difficulty}
           />
-
-          <AnimatePresence>
-            {gameState.lastExplanation && (
-              <motion.div 
-                className="explanation-toast"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-              >
-                <div className="explanation-bubble">
-                  {gameState.lastExplanation}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </main>
     </div>
