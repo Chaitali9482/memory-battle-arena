@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import './ReviewPage.css'
 
 const containerMotion = {
@@ -130,9 +131,36 @@ const ReviewPage = () => {
     mode: 'fun'
   }
 
-  
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 2000)
+  }
+
   return (
     <section className="review-page">
+      <AnimatePresence mode="wait">
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="toast-notification"
+            transition={{ duration: 0.3 }}
+          >
+            <div className={`toast-content toast-${toast.type}`}>
+              <div className="toast-icon">
+                {toast.type === 'success' ? '✓' : '✗'}
+              </div>
+              <div className="toast-text">
+                <div className="toast-main">{toast.message}</div>
+                {toast.type === 'success' && <div className="toast-sub">e.g., Carbon is correct</div>}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <motion.div
         className="review-container"
@@ -176,6 +204,7 @@ const ReviewPage = () => {
         <motion.footer className="review-actions" variants={itemMotion}>
           <button type="button" className="btn-retry-pairs" onClick={() => {
             navigate('/')
+            showToast('Retrying struggled pairs...', 'success')
           } }>
             Retry Struggled Pairs
           </button>
