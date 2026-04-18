@@ -2205,6 +2205,63 @@ p {
     padding: 0 clamp(0.2rem, 1vw, 0.5rem) !important;
     height: auto;
     min-height: clamp(42px, 12dvh, 50px);
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-left {
+    order: 1;
+    flex: 0 0 auto;
+    min-width: auto;
+  }
+
+  .header-center {
+    order: 2;
+    flex: 1 1 auto;
+    justify-content: center;
+    gap: clamp(0.3rem, 1vw, 0.5rem);
+  }
+
+  .header-right {
+    order: 3;
+    flex: 0 0 auto;
+    min-width: auto;
+    justify-content: flex-end;
+    gap: 0.2rem;
+  }
+
+  .mode-label {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+  }
+
+  .header-stat {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .header-stat .stat-label {
+    font-size: 10px;
+  }
+
+  .header-stat strong {
+    font-size: 14px;
+  }
+
+  .icon-btn {
+    font-size: 18px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px;
+  }
+
+  .result-actions-vertical {
+    gap: 0.5rem;
+    margin-top: 0.75rem;
   }
 
   /* Victory header responsiveness */
@@ -2245,11 +2302,6 @@ p {
 
   .header-right {
     gap: 0.25rem;
-  }
-
-  .result-actions-vertical {
-    gap: 0.5rem;
-    margin-top: 0.75rem;
   }
 
   .achievements-header {
@@ -2293,22 +2345,62 @@ p {
 /* MEDIUM MOBILE (375px - 599px) */
 @media (min-width: 375px) and (max-width: 599px) {
   .game-header {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0 clamp(0.4rem, 1.3vw, 0.7rem) !important;
-  }
-
-  .header-center {
-    gap: clamp(0.35rem, 1.2vw, 0.7rem);
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
   }
 
   .header-left {
-    flex: 1;
+    order: 1;
+    flex: 0 0 auto;
     min-width: auto;
   }
 
+  .header-center {
+    order: 2;
+    flex: 1 1 auto;
+    justify-content: center;
+    gap: clamp(0.35rem, 1.2vw, 0.7rem);
+  }
+
   .header-right {
+    order: 3;
+    flex: 0 0 auto;
+    min-width: auto;
+    justify-content: flex-end;
     gap: 0.3rem;
+  }
+
+  .mode-label {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+
+  .header-stat {
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .header-stat .stat-label {
+    font-size: 11px;
+  }
+
+  .header-stat strong {
+    font-size: 16px;
+  }
+
+  .icon-btn {
+    font-size: 20px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
   }
 
   .result-card-white {
