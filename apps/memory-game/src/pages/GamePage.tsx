@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useGame } from '../hooks/useGame'
 import { Grid } from '../components/Grid'
-import { motion } from 'framer-motion'
 
 const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
